@@ -51,7 +51,6 @@ export default class App extends Component {
       name : e.className,
       students
     };
-    console.log(data);
     let resp = await fetch(classroute, {
       method: 'POST',
       body: JSON.stringify(data), 

@@ -19,7 +19,6 @@ class AddClassroom extends Component {
             className: "",
             students: ""
         };
-        // this.handleClose = this.handleClose.bind(this);
     }
 
     updateName(e){
@@ -35,7 +34,6 @@ class AddClassroom extends Component {
     }
 
     handleSave(e) {
-        console.log("Pataho:: ", this.state);
         this.props.onShow();
         this.props.onSave(this.state);
     }
