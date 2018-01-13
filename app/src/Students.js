@@ -6,14 +6,14 @@ import {
     FormGroup,
     ControlLabel,
     FormControl,
-    Form
+    Form,
 } from 'react-bootstrap';
 
 class Students extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        student: ""
+        student: '',
     };
     this.handleSaveStudent = this.handleSaveStudent.bind(this);
     this.updateStudent = this.updateStudent.bind(this);
@@ -26,14 +26,14 @@ class Students extends Component {
     if (data === undefined || data === null) {
         return;
     }
-    let tabulatedStudentsList = data.map((id, ind) => (
-      <tr key={id}>
+    let tabulatedStudentsList = data.map((student, ind) => (
+      <tr key={student._id}>
         <td>{ind}</td>
-        <td>{id}</td>
+        <td>{student.username}</td>
         <td>
           <Button
             className="btn btn-danger"
-            onClick={()=>this.props.deleteStudent(id)}
+            onClick={()=>this.props.deleteStudent(student._id)}
           >
               Delete
           </Button>
@@ -44,19 +44,19 @@ class Students extends Component {
   }
 
   handleSaveStudent() {
-    this.props.onShow();  
+    this.props.onShow();
     this.props.onAddStudent(
         {
-            classId : this.props.classId,
-            student : this.state.student
+            classId: this.props.classId,
+            student: this.state.student,
         }
     );
   }
 
   updateStudent(e) {
-      this.setState({
-          student: e.target.value
-      });
+    this.setState({
+      student: e.target.value,
+    });
   }
 
   toggleShow() {
@@ -66,36 +66,36 @@ class Students extends Component {
   render() {
     return (
       <Modal show={this.props.showModal}>
-          <Modal.Header>
-              <Modal.Title>Students</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Table>
-              <thead>
-                <tr>
-                  <th> Index </th>
-                  <th> Username </th>
-                  <th> Delete </th>
-                </tr>
-              </thead>
-              <tbody>
-                { this.dataHTML() }
-              </tbody>
-            </Table>
-          </Modal.Body>
-          <Modal.Footer>
-              <Form inline>
-                <FormGroup controlId={"Student"} bsClass={"pull-left"}>
-                    <ControlLabel>{"Add Student"}</ControlLabel> {' '}
-                    <FormControl 
-                        placeholder={"Student Username"}
-                        onChange={ this.updateStudent }
-                    />
-                </FormGroup>
-                <Button onClick={this.handleSaveStudent} type={'submit'}>Save</Button>{ ' ' }
-                <Button onClick={this.toggleShow}>Close</Button>
-              </Form>
-          </Modal.Footer>
+        <Modal.Header>
+            <Modal.Title>Students</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Table>
+            <thead>
+              <tr>
+                <th> Index </th>
+                <th> Username </th>
+                <th> Delete </th>
+              </tr>
+            </thead>
+            <tbody>
+              { this.dataHTML() }
+            </tbody>
+          </Table>
+        </Modal.Body>
+        <Modal.Footer>
+            <Form inline>
+              <FormGroup controlId={'Student'} bsClass={'pull-left'}>
+                  <ControlLabel>{'Add Student'}</ControlLabel> {' '}
+                  <FormControl
+                      placeholder={'Student Username'}
+                      onChange={ this.updateStudent }
+                  />
+              </FormGroup>
+              <Button onClick={this.handleSaveStudent} >Save</Button>{ ' ' }
+              <Button onClick={this.toggleShow}>Close</Button>
+            </Form>
+        </Modal.Footer>
       </Modal>
     );
   }

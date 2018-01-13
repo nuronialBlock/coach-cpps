@@ -52,7 +52,7 @@ class Landing extends Component {
       resp = await resp.json();
       if (resp.status !== 200) throw resp;
       this.setState({
-        students: this.state.students.filter((x)=>x!==id),
+        students: this.state.students.filter((x)=>x._id!==id),
       });
       this.props.refreshData();
     } catch (err) {

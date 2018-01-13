@@ -44,7 +44,7 @@ export default class App extends Component {
 
   async addNewStudent(data) {
     const id = await asyncUsernameToUserId(data.student);
-    const url = `/api/v1/classroom/${data.classId}/students`;
+    const url = `/api/v1/classrooms/${data.classId}/students`;
     const body = {
       student: id
     };
