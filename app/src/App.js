@@ -10,7 +10,7 @@ import {
   ButtonToolbar,
   Button
   } from 'react-bootstrap';
-import axios from 'axios';
+// import axios from 'axios';
 
 import Landing from "./Landing";
 import AddClassroom from './AddClassroom';
@@ -29,7 +29,7 @@ function CustomNavBar(props) {
     </Navbar>
   );
 }
-  
+
 
 export default class App extends Component {
   constructor(props) {
@@ -53,7 +53,7 @@ export default class App extends Component {
     };
     let resp = await fetch(classroute, {
       method: 'POST',
-      body: JSON.stringify(data), 
+      body: JSON.stringify(data),
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
@@ -79,16 +79,16 @@ export default class App extends Component {
       credentials: 'same-origin'
     });
     try {
-      const data = await resp.json();  
+      const data = await resp.json();
       if (data === undefined || data === null) {
         return null
       }
-      return data.data;    
+      return data.data;
     } catch (error) {
       console.log(error);
     }
   }
-  
+
   async componentDidMount(){
     let data = await this.getData();
     this.setState({
@@ -110,18 +110,18 @@ export default class App extends Component {
       data
     })
   }
-  
+
   render() {
     return (
-      <div> 
+      <div>
         <CustomNavBar value={"Coach Dashboard"} />
         <Grid>
           <ButtonToolbar>
-            <Button 
+            <Button
               onClick = { this.showClassroomModal }
               > ADD Class
             </Button>
-            <AddClassroom 
+            <AddClassroom
               showModal={ this.state.showClassModal }
               onShow={ this.showClassroomModal }
               onSave={ this.addClassroom }
@@ -130,7 +130,7 @@ export default class App extends Component {
 
           <Row>
             <Col>
-                  <Landing 
+                  <Landing
                     classData={ this.state.data }
                     onDelete= { this.deleteClass }
                   />
