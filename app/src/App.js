@@ -1,22 +1,18 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Grid,
   Row,
   Col,
-  FormGroup,
-  ControlLabel,
-  FormControl,
   Navbar,
   ButtonToolbar,
-  Button
-  } from 'react-bootstrap';
+  Button,
+} from 'react-bootstrap';
 // import axios from 'axios';
 
-import Landing from "./Landing";
+import Landing from './Landing';
 import AddClassroom from './AddClassroom';
 
-const classroute = "/api/v1/classrooms";
-
+const classroute = '/api/v1/classrooms';
 
 function CustomNavBar(props) {
   return (
@@ -30,45 +26,50 @@ function CustomNavBar(props) {
   );
 }
 
-
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      showClassModal: false
+      showClassModal: false,
     };
     this.deleteClass = this.deleteClass.bind(this);
     this.addClassroom = this.addClassroom.bind(this);
     this.getData = this.getData.bind(this);
     this.showClassroomModal = this.showClassroomModal.bind(this);
+    this.refreshData = this.refreshData.bind(this);
   }
 
-  async addClassroom(e){
-    let students = new Array();
-    students = e.students.split(',')
+  async addClassroom(e) {
+    let students = [];
+    students = e.students.split(',').map((x)=> x.trim());
     let data = {
-      name : e.className,
-      students
+      name: e.className,
+      students,
     };
-    let resp = await fetch(classroute, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      }),
-      credentials: 'same-origin'
-    });
-    data = await this.getData();
-    this.setState({
-      data
-    })
+    try {
+      let resp = await fetch(classroute, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+        credentials: 'same-origin',
+      });
+      resp = await resp.json();
+      if ( resp.status !== 201 ) {
+        throw resp;
+      }
+      await this.refreshData();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   showClassroomModal() {
     let show = this.state.showClassModal;
     this.setState({
-      showClassModal: !show
+      showClassModal: !show,
     });
   }
 
@@ -76,12 +77,15 @@ export default class App extends Component {
     let resp = await fetch(classroute, {
       method: 'get',
       headers: {'Content-Type': 'application/json'},
-      credentials: 'same-origin'
+      credentials: 'same-origin',
     });
     try {
       const data = await resp.json();
       if (data === undefined || data === null) {
-        return null
+        return null;
+      }
+      if (data.status !== 200) {
+        throw data;
       }
       return data.data;
     } catch (error) {
@@ -89,26 +93,27 @@ export default class App extends Component {
     }
   }
 
-  async componentDidMount(){
+  async componentDidMount() {
+    await this.refreshData();
+  }
+
+  async refreshData() {
     let data = await this.getData();
     this.setState({
-      data
-    })
+      data,
+    });
   }
 
   async deleteClass(id) {
-    let url = `${classroute}/${id}`
+    let url = `${classroute}/${id}`;
     await fetch( url, {
       method: 'DELETE',
       headers: new Headers({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }),
-      credentials: 'same-origin'
-    })
-    let data = await this.getData();
-    this.setState({
-      data
-    })
+      credentials: 'same-origin',
+    });
+    await this.refreshData();
   }
 
   render() {
@@ -130,10 +135,11 @@ export default class App extends Component {
 
           <Row>
             <Col>
-                  <Landing
-                    classData={ this.state.data }
-                    onDelete= { this.deleteClass }
-                  />
+              <Landing
+                classData={this.state.data}
+                onDelete= {this.deleteClass}
+                refreshData= {this.refreshData}
+              />
             </Col>
           </Row>
         </Grid>

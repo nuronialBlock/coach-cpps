@@ -1,94 +1,120 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
-    Table,
-    ButtonToolbar,
-    Button
-    } from 'react-bootstrap';
+  Table,
+  ButtonToolbar,
+  Button,
+} from 'react-bootstrap';
 import Students from './Students';
 
-const classroute = "api/v1/classroom";
+// const classroute = 'api/v1/classroom';
 
 class Landing extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            showStudents : false,
-            students: []
-        };
-        
-        this.handleShowStudents = this.handleShowStudents.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.DataHTML = this.DataHTML.bind(this);
-        this.landingDataRepresentation = this.landingDataRepresentation.bind(this);
-    }
+    this.state = {
+      showStudents: false,
+      students: [],
+      classId: '',
+    };
 
-    handleDelete(e){
-        this.props.onDelete(e);
-    }
-    
-    handleShowStudents(students){
-        this.setState({
-            students,
-            showStudents: !this.state.showStudents
-        });
-    }
+    this.handleShowStudents = this.handleShowStudents.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.dataHTML = this.dataHTML.bind(this);
+    this.landingDataRepresentation = this.landingDataRepresentation.bind(this);
+    this.deleteStudent = this.deleteStudent.bind(this);
+  }
 
-    DataHTML(data) {
-        return (
+  handleDelete(e) {
+    this.props.onDelete(e);
+  }
+
+  handleShowStudents(students, classId) {
+    this.setState({
+        students,
+        classId,
+        showStudents: !this.state.showStudents,
+    });
+  }
+
+  async deleteStudent(id) {
+    const api = `/api/v1/classrooms/${this.state.classId}/students/${id}`;
+    try {
+      let resp = await fetch(api, {
+        method: 'DELETE',
+        credentials: 'same-origin',
+      });
+      resp = await resp.json();
+      if (resp.status !== 200) throw resp;
+      this.setState({
+        students: this.state.students.filter((x)=>x!==id),
+      });
+    } catch (err) {
+      console.log(err);
+      if ( err.message ) alert(err.message);
+    }
+  }
+
+  dataHTML(data) {
+    return (
+      <tr key={data[1]}>
+        <td>{ data[2] }</td>
+        <td>{ data[0] }</td>
+        <td>{ data[1] }</td>
+        <td>
+          <ButtonToolbar>
+            <Button
+              onClick={ () => this.handleShowStudents(data[3], data[1]) }>
+              Enter
+            </Button>
+            <Button onClick={ () => this.handleDelete(data[1]) }>Delete</Button>
+          </ButtonToolbar>
+        </td>
+     </tr>
+    );
+  }
+
+  landingDataRepresentation(data) {
+      if (data === null || data === undefined) {
+          return;
+      }
+      let rows = [];
+      for (let i = 0; i < data.length; i++) {
+          const obj = data[i];
+          const element = [obj.name, obj._id];
+          element.push(i+1);
+          element.push(obj.students);
+          let dataX = this.dataHTML(element);
+          rows.push(dataX);
+      }
+      return rows;
+  }
+
+  render() {
+    return (
+      <div>
+        <Table class="table table-hover" hover>
+          <thead>
             <tr>
-            <td>{ data[2] }</td>
-            <td>{ data[0] }</td>
-            <td>{ data[1] }</td>
-            <td>
-                <ButtonToolbar>
-                    <Button onClick={ () => this.handleShowStudents(data[3]) }>Enter</Button>
-                    <Button onClick={ () => this.handleDelete(data[1]) }>Delete</Button>
-                </ButtonToolbar>
-            </td>
-         </tr>
-        );
-    }
-
-    landingDataRepresentation(data) {
-        if (data === null || data === undefined) {
-            return null
-        }
-        let rows = [];
-        for (let i = 0; i < data.length; i++) {
-            const obj = data[i];
-            const element = [ obj.name, obj._id];
-            element.push(i+1);
-            element.push(obj.students);
-            let dataX = this.DataHTML(element)
-            rows.push(dataX);
-        }
-        return rows;
-    }
-
-    render() {
-        return (
-            <div>
-                <Table class="table table-hover" hover>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Classroom</th>
-                            <th>Class ID</th>
-                        </tr>
-                    </thead>
-                    <tbody>  
-                        { this.landingDataRepresentation(this.props.classData) }  
-                        <Students
-                            onShow={ this.handleShowStudents }
-                            showModal={ this.state.showStudents }
-                            studentsList= { this.state.students }
-                        />
-                    </tbody>
-                </Table>
-            </div>
-        );
-    }
+              <th>#</th>
+              <th>Classroom</th>
+              <th>Class ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            { this.landingDataRepresentation(this.props.classData) }
+            <Students
+                onShow={ this.handleShowStudents }
+                showModal={ this.state.showStudents }
+                classId= {this.state.classId}
+                studentsList= { this.state.students }
+                deleteStudent= { this.deleteStudent}
+            />
+          </tbody>
+        </Table>
+      </div>
+    );
+  }
 }
 
 export default Landing;
