@@ -1,9 +1,22 @@
 import React, {Component} from 'react';
-import {Modal, Button, Table} from 'react-bootstrap';
+import {
+    Modal,
+    Button,
+    Table,
+    FormGroup,
+    ControlLabel,
+    FormControl,
+    Form
+} from 'react-bootstrap';
 
 class Students extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+        student: ""
+    };
+    this.handleSaveStudent = this.handleSaveStudent.bind(this);
+    this.updateStudent = this.updateStudent.bind(this);
     this.dataHTML = this.dataHTML.bind(this);
     this.toggleShow = this.toggleShow.bind(this);
   }
@@ -28,6 +41,22 @@ class Students extends Component {
       </tr>
     ));
     return tabulatedStudentsList;
+  }
+
+  handleSaveStudent() {
+    this.props.onShow();  
+    this.props.onAddStudent(
+        {
+            classId : this.props.classId,
+            student : this.state.student
+        }
+    );
+  }
+
+  updateStudent(e) {
+      this.setState({
+          student: e.target.value
+      });
   }
 
   toggleShow() {
@@ -55,7 +84,17 @@ class Students extends Component {
             </Table>
           </Modal.Body>
           <Modal.Footer>
-              <Button onClick={this.toggleShow}>Close</Button>
+              <Form inline>
+                <FormGroup controlId={"Student"} bsClass={"pull-left"}>
+                    <ControlLabel>{"Add Student"}</ControlLabel> {' '}
+                    <FormControl 
+                        placeholder={"Student Username"}
+                        onChange={ this.updateStudent }
+                    />
+                </FormGroup>
+                <Button onClick={this.handleSaveStudent} type={'submit'}>Save</Button>{ ' ' }
+                <Button onClick={this.toggleShow}>Close</Button>
+              </Form>
           </Modal.Footer>
       </Modal>
     );

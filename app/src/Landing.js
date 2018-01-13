@@ -18,11 +18,16 @@ class Landing extends Component {
       classId: '',
     };
 
+    this.handleNewStudent = this.handleNewStudent.bind(this);
     this.handleShowStudents = this.handleShowStudents.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.dataHTML = this.dataHTML.bind(this);
     this.landingDataRepresentation = this.landingDataRepresentation.bind(this);
     this.deleteStudent = this.deleteStudent.bind(this);
+  }
+
+  handleNewStudent(data) {
+    this.props.onAddStudent(data);
   }
 
   handleDelete(e) {
@@ -105,6 +110,7 @@ class Landing extends Component {
           <tbody>
             { this.landingDataRepresentation(this.props.classData) }
             <Students
+                onAddStudent={ this.handleNewStudent }
                 onShow={ this.handleShowStudents }
                 showModal={ this.state.showStudents }
                 classId= {this.state.classId}

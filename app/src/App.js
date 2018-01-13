@@ -34,11 +34,37 @@ export default class App extends Component {
       data: [],
       showClassModal: false,
     };
+    this.addNewStudent = this.addNewStudent.bind(this);
     this.deleteClass = this.deleteClass.bind(this);
     this.addClassroom = this.addClassroom.bind(this);
     this.getData = this.getData.bind(this);
     this.showClassroomModal = this.showClassroomModal.bind(this);
     this.refreshData = this.refreshData.bind(this);
+  }
+
+  async addNewStudent(data) {
+    const id = await asyncUsernameToUserId(data.student);
+    const url = `/api/v1/classroom/${data.classId}/students`;
+    const body = {
+      student: id
+    };
+    try {
+      let resp = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: new Headers({
+          'Content-Type': 'application/json',
+        }),
+        credentials: 'same-origin',
+      });
+      resp = await resp.json();
+      if ( resp.status !== 201 ) {
+        throw resp;
+      }
+      await this.refreshData();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async addClassroom(e) {
@@ -148,6 +174,7 @@ export default class App extends Component {
           <Row>
             <Col>
               <Landing
+                onAddStudent={this.addNewStudent}
                 classData={this.state.data}
                 onDelete= {this.deleteClass}
                 refreshData= {this.refreshData}
