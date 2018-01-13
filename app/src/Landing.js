@@ -49,6 +49,7 @@ class Landing extends Component {
       this.setState({
         students: this.state.students.filter((x)=>x!==id),
       });
+      this.props.refreshData();
     } catch (err) {
       console.log(err);
       if ( err.message ) alert(err.message);
@@ -93,7 +94,7 @@ class Landing extends Component {
   render() {
     return (
       <div>
-        <Table class="table table-hover" hover>
+        <Table className="table table-hover" hover>
           <thead>
             <tr>
               <th>#</th>
