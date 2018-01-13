@@ -7,6 +7,7 @@ import {
   ButtonToolbar,
   Button,
 } from 'react-bootstrap';
+import {asyncUsernameToUserId} from './utility.js';
 // import axios from 'axios';
 
 import Landing from './Landing';
@@ -43,6 +44,17 @@ export default class App extends Component {
   async addClassroom(e) {
     let students = [];
     students = e.students.split(',').map((x)=> x.trim());
+    students = await Promise.all(students.map(async (username) => {
+      try {
+        return await asyncUsernameToUserId(username);
+      } catch (err) {
+        console.log(`Some problem occured due to ${username}`);
+        return '';
+      }
+    }));
+
+    students = students.filter((x)=>x);
+
     let data = {
       name: e.className,
       students,
