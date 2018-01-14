@@ -8,6 +8,7 @@ import {
     FormControl,
     Form,
 } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 class Students extends Component {
   constructor(props) {
@@ -45,12 +46,10 @@ class Students extends Component {
 
   handleSaveStudent() {
     this.props.onShow();
-    this.props.onAddStudent(
-        {
-            classId: this.props.classId,
-            student: this.state.student,
-        }
-    );
+    this.props.onAddStudent({
+      classId: this.props.classId,
+      student: this.state.student,
+    });
   }
 
   updateStudent(e) {
@@ -100,5 +99,18 @@ class Students extends Component {
     );
   }
 }
+
+/** PropTypes */
+Students.propTypes = {
+  showModal: PropTypes.bool.isRequired,
+  onShow: PropTypes.func.isRequired,
+  onAddStudent: PropTypes.func.isRequired,
+  classId: PropTypes.string.isRequired,
+  deleteStudent: PropTypes.func.isRequired,
+  studentsList: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+  })),
+};
 
 export default Students;

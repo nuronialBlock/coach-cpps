@@ -8,7 +8,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import {asyncUsernameToUserId} from './utility.js';
-// import axios from 'axios';
+import PropTypes from 'prop-types';
 
 import Landing from './Landing';
 import AddClassroom from './AddClassroom';
@@ -46,7 +46,7 @@ export default class App extends Component {
     const id = await asyncUsernameToUserId(data.student);
     const url = `/api/v1/classrooms/${data.classId}/students`;
     const body = {
-      student: id
+      student: id,
     };
     try {
       let resp = await fetch(url, {
@@ -157,7 +157,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <CustomNavBar value={"Coach Dashboard"} />
+        <CustomNavBar value={'Coach Dashboard'} />
         <Grid>
           <ButtonToolbar>
             <Button
@@ -186,3 +186,8 @@ export default class App extends Component {
     );
   }
 }
+
+/** PropTypes */
+CustomNavBar.propTypes = {
+  value: PropTypes.string.isRequired,
+};

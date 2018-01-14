@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
   Modal,
   Button,
@@ -6,6 +6,7 @@ import {
   ControlLabel,
   FormControl,
 } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 class AddClassroom extends Component {
   constructor(props) {
@@ -15,9 +16,9 @@ class AddClassroom extends Component {
     this.updateName = this.updateName.bind(this);
     this.updateStudents = this.updateStudents.bind(this);
     this.state = {
-        show: this.props.showModal,
-        className: '',
-        students: '',
+      show: this.props.showModal,
+      className: '',
+      students: '',
     };
   }
 
@@ -38,7 +39,7 @@ class AddClassroom extends Component {
     this.props.onSave(this.state);
   }
 
-  handleShowToggle(){
+  handleShowToggle() {
     this.props.onShow();
   }
 
@@ -74,5 +75,11 @@ class AddClassroom extends Component {
     );
   }
 }
+
+AddClassroom.propTypes = {
+  showModal: PropTypes.bool.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onShow: PropTypes.func.isRequired,
+};
 
 export default AddClassroom;

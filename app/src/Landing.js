@@ -5,8 +5,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import Students from './Students';
-
-// const classroute = 'api/v1/classroom';
+import PropTypes from 'prop-types';
 
 class Landing extends Component {
   constructor(props) {
@@ -123,5 +122,14 @@ class Landing extends Component {
     );
   }
 }
+
+/** PropTypes */
+
+Landing.propTypes = {
+  onAddStudent: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  refreshData: PropTypes.func.isRequired,
+  classData: PropTypes.array.isRequired,
+};
 
 export default Landing;
