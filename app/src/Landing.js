@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import {
   Table,
-  ButtonToolbar,
-  Button,
+  Row,
+  Col,
 } from 'react-bootstrap';
-import Students from './Students';
 import PropTypes from 'prop-types';
 
 class Landing extends Component {
@@ -65,16 +65,7 @@ class Landing extends Component {
       <tr key={data[1]}>
         <td>{ data[2] }</td>
         <td>{ data[0] }</td>
-        <td>{ data[1] }</td>
-        <td>
-          <ButtonToolbar>
-            <Button
-              onClick={ () => this.handleShowStudents(data[3], data[1]) }>
-              Enter
-            </Button>
-            <Button onClick={ () => this.handleDelete(data[1]) }>Delete</Button>
-          </ButtonToolbar>
-        </td>
+        <td><Link to={`/classroom/${data[1]}`}>{data[1]}</Link></td>
      </tr>
     );
   }
@@ -97,28 +88,22 @@ class Landing extends Component {
 
   render() {
     return (
-      <div>
-        <Table className="table table-hover" hover>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Classroom</th>
-              <th>Class ID</th>
-            </tr>
-          </thead>
-          <tbody>
-            { this.landingDataRepresentation(this.props.classData) }
-            <Students
-                onAddStudent={ this.handleNewStudent }
-                onShow={ this.handleShowStudents }
-                showModal={ this.state.showStudents }
-                classId= {this.state.classId}
-                studentsList= { this.state.students }
-                deleteStudent= { this.deleteStudent}
-            />
-          </tbody>
-        </Table>
-      </div>
+      <Row>
+        <Col>
+          <Table className="table table-hover" hover>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Classroom</th>
+                <th>Class ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              { this.landingDataRepresentation(this.props.classData) }
+            </tbody>
+          </Table>
+        </Col>
+      </Row>
     );
   }
 }

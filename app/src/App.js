@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Grid} from 'react-bootstrap';
 import Header from './Header.js';
 import Main from './Main.js';
 
@@ -7,7 +8,9 @@ export default class Dashboard extends Component {
     return (
       <div>
         <Header title='Coach Dashboard'/>
-        <Main/>
+        <Grid>
+          <Main/>
+        </Grid>
       </div>
     );
   }
