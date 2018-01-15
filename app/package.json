@@ -13,7 +13,8 @@
     "markdown-react-js": "^0.3.0",
     "react": "^15.6.1",
     "react-bootstrap": "^0.31.2",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "eslint": "^4.15.0",
