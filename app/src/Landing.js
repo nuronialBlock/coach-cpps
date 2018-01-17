@@ -4,7 +4,7 @@ import {
   Table,
   Row,
   Col,
-} from 'react-bootstrap';
+} from 'reactstrap';
 import PropTypes from 'prop-types';
 
 class Landing extends Component {

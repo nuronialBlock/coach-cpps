@@ -1,18 +1,21 @@
 import React, {Component} from 'react';
+import {LinkContainer} from 'react-router-bootstrap';
 import {
+  Container,
   Navbar,
-} from 'react-bootstrap';
+  NavbarBrand,
+} from 'reactstrap';
 import PropTypes from 'prop-types';
 
 export default class Header extends Component {
   render() {
     return (
-      <Navbar>
-        <Navbar.Header>
-          <Navbar.Brand>
-            {this.props.title}
-          </Navbar.Brand>
-        </Navbar.Header>
+      <Navbar color='faded' light>
+        <Container>
+          <LinkContainer to='/coach'>
+            <NavbarBrand>{this.props.title}</NavbarBrand>
+          </LinkContainer>
+        </Container>
       </Navbar>
     );
   }

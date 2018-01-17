@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
     Table,
-} from 'react-bootstrap';
+} from 'reactstrap';
 import PropTypes from 'prop-types';
 
 class Classroom extends Component {

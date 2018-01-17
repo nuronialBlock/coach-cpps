@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import {
-  Grid,
   Row,
   Col,
   ButtonToolbar,
   Button,
-} from 'react-bootstrap';
+} from 'reactstrap';
 import {asyncUsernameToUserId} from './utility.js';
 
 import Landing from './Landing';
-import AddClassroom from './components/classroom/AddClassroom';
 
 const classroute = '/api/v1/classrooms';
 
@@ -143,30 +142,22 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div>
-        <Grid>
-          <ButtonToolbar>
-            <Button
-              onClick = { this.showClassroomModal }
-              > ADD Class
-            </Button>
-            <AddClassroom
-              showModal={ this.state.showClassModal }
-              onShow={ this.showClassroomModal }
-              onSave={ this.addClassroom }
-            />
-          </ButtonToolbar>
+        <ButtonToolbar>
+          <Button>
+            <Link to='/coach/addClassroom'>ADD Class</Link>
+          </Button>
+        </ButtonToolbar>
 
-          <Row>
-            <Col>
-              <Landing
-                onAddStudent={this.addNewStudent}
-                classData={this.state.data}
-                onDelete= {this.deleteClass}
-                refreshData= {this.refreshData}
-              />
-            </Col>
-          </Row>
-        </Grid>
+        <Row>
+          <Col>
+            <Landing
+              onAddStudent={this.addNewStudent}
+              classData={this.state.data}
+              onDelete= {this.deleteClass}
+              refreshData= {this.refreshData}
+            />
+          </Col>
+        </Row>
       </div>
     );
   }

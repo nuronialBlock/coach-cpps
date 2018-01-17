@@ -1,85 +1,56 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import {
-  Modal,
+  Form,
   Button,
+  Input,
+  Label,
   FormGroup,
-  ControlLabel,
-  FormControl,
-} from 'react-bootstrap';
-import PropTypes from 'prop-types';
+} from 'reactstrap';
 
 class AddClassroom extends Component {
   constructor(props) {
     super(props);
-    this.handleShowToggle = this.handleShowToggle.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.updateName = this.updateName.bind(this);
-    this.updateStudents = this.updateStudents.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.state = {
-      show: this.props.showModal,
-      className: '',
+      name: '',
       students: '',
     };
   }
 
-  updateName(e) {
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
     this.setState({
-      className: e.target.value,
+      [name]: value,
     });
-  }
-
-  updateStudents(e) {
-    this.setState({
-      students: e.target.value,
-    });
-  }
-
-  handleSave(e) {
-    this.props.onShow();
-    this.props.onSave(this.state);
-  }
-
-  handleShowToggle() {
-    this.props.onShow();
   }
 
   render() {
     return (
       <div>
-        <Modal show={this.props.showModal}>
-          <Modal.Header>
-            <Modal.Title>Add Classroom</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <form>
-              <FormGroup controlId={'ClassRoom'}>
-                <ControlLabel>{'Add Class'}</ControlLabel>
-                <FormControl
-                  placeholder={'Classroom Name'}
-                  onChange={ this.updateName }
-                />
-                <ControlLabel>{'Add Students ID'}</ControlLabel>
-                <FormControl
-                  placeholder={'Student IDs'}
-                  onChange={ this.updateStudents }
-                />
-            </FormGroup>
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.handleSave}>Save</Button>
-            <Button onClick={this.handleShowToggle}>Close</Button>
-          </Modal.Footer>
-        </Modal>
+        <h1> Add Classroom </h1>
+        <Form>
+          <FormGroup controlId={'ClassRoom'}>
+            <Label>{'Add Class'}</Label>
+            <Input
+              placeholder={'Classroom Name'}
+              onChange={ this.updateName }
+            />
+            <Label>{'Add Students ID'}</Label>
+            <Input
+              placeholder={'Student IDs'}
+              onChange={ this.updateStudents }
+            />
+          </FormGroup>
+        </Form>
+        <Button className='btn btn-primary' onClick={this.handleSave}>Save</Button>
+        <Button className='btn btn-secondary ml-1'> <Link to='/coach'> Cancel </Link> </Button>
       </div>
     );
   }
 }
-
-AddClassroom.propTypes = {
-  showModal: PropTypes.bool.isRequired,
-  onSave: PropTypes.func.isRequired,
-  onShow: PropTypes.func.isRequired,
-};
 
 export default AddClassroom;
