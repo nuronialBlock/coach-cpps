@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Row, Col} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Classroom from './Classroom.js';
 
@@ -9,6 +8,8 @@ class ClassroomContainer extends Component {
 
     this.state = {
       students: [],
+      classId: this.props.match.params.classId,
+      name: '',
     };
   }
 
@@ -23,6 +24,7 @@ class ClassroomContainer extends Component {
       if (resp.status !== 200) throw resp;
       this.setState({
         students: resp.data.students,
+        name: resp.data.name,
       });
     } catch (err) {
       if (err.status) alert(err.message);
@@ -32,9 +34,11 @@ class ClassroomContainer extends Component {
 
   render() {
     return (
-      <Row>
-        <Classroom students={this.state.students} />
-      </Row>
+      <Classroom
+        name={this.state.name}
+        classId={this.state.classId}
+        students={this.state.students}
+      />
     );
   }
 }

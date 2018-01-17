@@ -9,7 +9,7 @@ import {
 import {asyncUsernameToUserId} from './utility.js';
 
 import Landing from './Landing';
-import AddClassroom from './AddClassroom';
+import AddClassroom from './components/classroom/AddClassroom';
 
 const classroute = '/api/v1/classrooms';
 

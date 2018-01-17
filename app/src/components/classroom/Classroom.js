@@ -9,7 +9,7 @@ class Classroom extends Component {
     const students = this.props.students;
     let tabulatedStudentsList = students.map((s, ind) => (
       <tr key={s._id}>
-        <td>{ind}</td>
+        <td>{ind + 1}</td>
         <td>{s.username}</td>
       </tr>
     ));
@@ -19,6 +19,7 @@ class Classroom extends Component {
   render() {
     return (
       <div>
+        <h1>{this.props.name} </h1>
         <Table>
           <thead>
             <tr>
@@ -37,6 +38,8 @@ class Classroom extends Component {
 
 /** PropTypes */
 Classroom.propTypes = {
+  classId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   students: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,

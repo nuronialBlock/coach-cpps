@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Switch, Route} from 'react-router-dom';
 import Dashboard from './Dashboard';
-import ClassroomContainer from './ClassroomContainer';
+import ClassroomContainer from './components/classroom/ClassroomContainer.js';
 
 export default class Main extends Component {
   render() {
