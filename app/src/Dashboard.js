@@ -17,13 +17,10 @@ export default class Dashboard extends Component {
     super(props);
     this.state = {
       data: [],
-      showClassModal: false,
     };
     this.addNewStudent = this.addNewStudent.bind(this);
     this.deleteClass = this.deleteClass.bind(this);
-    this.addClassroom = this.addClassroom.bind(this);
     this.getData = this.getData.bind(this);
-    this.showClassroomModal = this.showClassroomModal.bind(this);
     this.refreshData = this.refreshData.bind(this);
   }
 
@@ -50,50 +47,6 @@ export default class Dashboard extends Component {
     } catch (err) {
       console.log(err);
     }
-  }
-
-  async addClassroom(e) {
-    let students = [];
-    students = e.students.split(',').map((x)=> x.trim());
-    students = await Promise.all(students.map(async (username) => {
-      try {
-        return await asyncUsernameToUserId(username);
-      } catch (err) {
-        console.log(`Some problem occured due to ${username}`);
-        return '';
-      }
-    }));
-
-    students = students.filter((x)=>x);
-
-    let data = {
-      name: e.className,
-      students,
-    };
-    try {
-      let resp = await fetch(classroute, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: new Headers({
-          'Content-Type': 'application/json',
-        }),
-        credentials: 'same-origin',
-      });
-      resp = await resp.json();
-      if ( resp.status !== 201 ) {
-        throw resp;
-      }
-      await this.refreshData();
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  showClassroomModal() {
-    let show = this.state.showClassModal;
-    this.setState({
-      showClassModal: !show,
-    });
   }
 
   async getData() {

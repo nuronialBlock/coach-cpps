@@ -1,22 +1,16 @@
 import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
 import {LinkContainer} from 'react-router-bootstrap';
-import {
-  Form,
-  Button,
-  Input,
-  Label,
-  FormGroup,
-} from 'reactstrap';
+import PropTypes from 'prop-types';
+import {Form, Button, Input, Label, FormGroup} from 'reactstrap';
 
 import {asyncUsernameToUserId} from '../../utility.js';
 
-class AddClassroom extends Component {
+class AddStudent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      students: '',
+      student: '',
       fireRedirect: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -34,34 +28,23 @@ class AddClassroom extends Component {
   }
 
   async handleSubmit() {
-    if (!this.state.name) {
-      return alert('Name cannot be empty');
+    if (!this.state.student) {
+      return alert('Student username cannot be empty');
     }
 
-    let students = this.state.students;
+    let student = this.state.student;
 
-    students = students.split(',').map((x)=> x.trim());
-    students = await Promise.all(students.map(async (username) => {
-      try {
-        return await asyncUsernameToUserId(username);
-      } catch (err) {
-        console.log(`Some problem occured due to ${username}`);
-        return '';
-      }
-    }));
-    students = students.filter((x)=>x);
-
-    let data = {
-      name: this.state.name,
-      students,
-    };
     try {
-      let resp = await fetch('/api/v1/classrooms', {
+      student = await asyncUsernameToUserId(student);
+      const data = {
+        student,
+      };
+      const {classId} = this.props.match.params;
+      const api = `/api/v1/classrooms/${classId}/students`;
+      let resp = await fetch(api, {
         method: 'POST',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data),
-        headers: new Headers({
-          'Content-Type': 'application/json',
-        }),
         credentials: 'same-origin',
       });
       resp = await resp.json();
@@ -69,42 +52,46 @@ class AddClassroom extends Component {
         throw resp;
       }
       this.setState({fireRedirect: true});
-      return;
     } catch (err) {
       console.log(err);
       if (err.status) alert(err.message);
+      return;
     }
   }
 
   render() {
     return (
       <div>
-        <h1> Add Classroom </h1>
+        <h1> Add Student </h1>
         <Form>
           <FormGroup>
-            <Label>{'Add Class'}</Label>
+            <Label>Student Username</Label>
             <Input
-              name='name'
-              placeholder={'Classroom Name'}
-              onChange={ this.handleInputChange }
-            />
-            <Label>{'Add Students ID'}</Label>
-            <Input
-              name='students'
-              placeholder={'Student IDs'}
+              name='student'
+              placeholder='Username'
               onChange={ this.handleInputChange }
             />
           </FormGroup>
         </Form>
+
         <Button color='primary' onClick={this.handleSubmit}>Save</Button>
-        <LinkContainer to='/coach'>
+        <LinkContainer to={`/classroom/${this.props.match.params.classId}`}>
           <Button className='ml-1'> Cancel</Button>
         </LinkContainer>
 
-        {this.state.fireRedirect && (<Redirect to={'/coach'}/>)}
+        {this.state.fireRedirect &&
+          (<Redirect to={`/classroom/${this.props.match.params.classId}`}/>)}
       </div>
     );
   }
 }
 
-export default AddClassroom;
+AddStudent.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      classId: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
+
+export default AddStudent;

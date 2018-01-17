@@ -64,8 +64,7 @@ class Landing extends Component {
     return (
       <tr key={data[1]}>
         <td>{ data[2] }</td>
-        <td>{ data[0] }</td>
-        <td><Link to={`/classroom/${data[1]}`}>{data[1]}</Link></td>
+        <td><Link to={`/classroom/${data[1]}`}>{data[0]}</Link></td>
      </tr>
     );
   }
@@ -95,7 +94,6 @@ class Landing extends Component {
               <tr>
                 <th>#</th>
                 <th>Classroom</th>
-                <th>Class ID</th>
               </tr>
             </thead>
             <tbody>

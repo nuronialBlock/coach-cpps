@@ -4,6 +4,7 @@ import Dashboard from './Dashboard';
 
 import ClassroomContainer from './components/classroom/ClassroomContainer.js';
 import AddClassroom from './components/classroom/AddClassroom.js';
+import AddStudent from './components/classroom/AddStudent.js';
 
 export default class Main extends Component {
   render() {
@@ -13,7 +14,10 @@ export default class Main extends Component {
           <Route exact path='/coach' component={Dashboard}/>
           <Route exact path='/coach/addClassroom' component={AddClassroom}/>
 
-          <Route path='/classroom/:classId' component={ClassroomContainer}/>
+          <Route exact path='/classroom/:classId'
+            component={ClassroomContainer}/>
+          <Route exact path='/classroom/:classId/addStudent'
+            component={AddStudent}/>
         </Switch>
       </main>
     );

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import {LinkContainer} from 'react-router-bootstrap';
 import {
-    Table,
+    Table, Row, Col, Button,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
@@ -17,9 +18,19 @@ class Classroom extends Component {
   }
 
   render() {
+    const {classId} = this.props;
     return (
       <div>
-        <h1>{this.props.name} </h1>
+        <Row>
+          <Col>
+            <h1>{this.props.name} </h1>
+          </Col>
+          <Col className='text-right'>
+            <LinkContainer to={`/classroom/${classId}/addStudent`}>
+              <Button color='primary'> Add Student </Button>
+            </LinkContainer>
+          </Col>
+        </Row>
         <Table>
           <thead>
             <tr>
