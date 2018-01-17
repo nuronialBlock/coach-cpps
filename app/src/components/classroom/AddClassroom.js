@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {LinkContainer} from 'react-router-bootstrap';
 import {
   Form,
   Button,
@@ -46,8 +46,10 @@ class AddClassroom extends Component {
             />
           </FormGroup>
         </Form>
-        <Button className='btn btn-primary' onClick={this.handleSave}>Save</Button>
-        <Button className='btn btn-secondary ml-1'> <Link to='/coach'> Cancel </Link> </Button>
+        <Button color='primary' onClick={this.handleSave}>Save</Button>
+        <LinkContainer to='/coach'>
+          <Button className='ml-1'> Cancel</Button> 
+        </LinkContainer>
       </div>
     );
   }

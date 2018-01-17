@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {LinkContainer} from 'react-router-bootstrap';
 import {
   Row,
   Col,
@@ -143,9 +143,9 @@ export default class Dashboard extends Component {
     return (
       <div>
         <ButtonToolbar>
-          <Button>
-            <Link to='/coach/addClassroom'>ADD Class</Link>
-          </Button>
+          <LinkContainer to='/coach/addClassroom'>
+            <Button color='primary'>ADD Class</Button>
+          </LinkContainer>
         </ButtonToolbar>
 
         <Row>
