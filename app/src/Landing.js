@@ -12,33 +12,18 @@ class Landing extends Component {
     super(props);
 
     this.state = {
-      showStudents: false,
       students: [],
       classId: '',
     };
 
-    this.handleNewStudent = this.handleNewStudent.bind(this);
-    this.handleShowStudents = this.handleShowStudents.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.dataHTML = this.dataHTML.bind(this);
     this.landingDataRepresentation = this.landingDataRepresentation.bind(this);
     this.deleteStudent = this.deleteStudent.bind(this);
   }
 
-  handleNewStudent(data) {
-    this.props.onAddStudent(data);
-  }
-
   handleDelete(e) {
     this.props.onDelete(e);
-  }
-
-  handleShowStudents(students, classId) {
-    this.setState({
-        students,
-        classId,
-        showStudents: !this.state.showStudents,
-    });
   }
 
   async deleteStudent(id) {
@@ -109,7 +94,6 @@ class Landing extends Component {
 /** PropTypes */
 
 Landing.propTypes = {
-  onAddStudent: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   refreshData: PropTypes.func.isRequired,
   classData: PropTypes.array.isRequired,

@@ -29,6 +29,14 @@ class Classroom extends Component {
             <LinkContainer to={`/classroom/${classId}/addStudent`}>
               <Button color='primary'> Add Student </Button>
             </LinkContainer>
+            <LinkContainer to={{
+              pathname: `/classroom/${classId}/deleteClass`,
+              state: {
+                name: this.props.name,
+              },
+            }}>
+              <Button color='danger' className='ml-1'> Delete Class </Button>
+            </LinkContainer>
           </Col>
         </Row>
         <Table>

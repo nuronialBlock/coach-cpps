@@ -33,7 +33,9 @@ class AddClassroom extends Component {
     });
   }
 
-  async handleSubmit() {
+  async handleSubmit(e) {
+    e.preventDefault();
+
     if (!this.state.name) {
       return alert('Name cannot be empty');
     }
@@ -80,7 +82,7 @@ class AddClassroom extends Component {
     return (
       <div>
         <h1> Add Classroom </h1>
-        <Form>
+        <Form onSubmit={this.handleSubmit}>
           <FormGroup>
             <Label>{'Add Class'}</Label>
             <Input
@@ -95,11 +97,11 @@ class AddClassroom extends Component {
               onChange={ this.handleInputChange }
             />
           </FormGroup>
+          <Button color='primary' type='submit'>Save</Button>
+          <LinkContainer to='/coach'>
+            <Button className='ml-1'> Cancel</Button>
+          </LinkContainer>
         </Form>
-        <Button color='primary' onClick={this.handleSubmit}>Save</Button>
-        <LinkContainer to='/coach'>
-          <Button className='ml-1'> Cancel</Button>
-        </LinkContainer>
 
         {this.state.fireRedirect && (<Redirect to={'/coach'}/>)}
       </div>

@@ -4,17 +4,22 @@ import {LinkContainer} from 'react-router-bootstrap';
 import PropTypes from 'prop-types';
 import {Form, Button, Input, Label, FormGroup} from 'reactstrap';
 
-import {asyncUsernameToUserId} from '../../utility.js';
-
-class AddStudent extends Component {
+class DeleteClass extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      student: '',
+      name: '',
       fireRedirect: false,
+      fireSuccess: false,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.location.state === undefined) {
+      this.setState({fireRedirect: true});
+    }
   }
 
   handleInputChange(event) {
@@ -30,33 +35,30 @@ class AddStudent extends Component {
   async handleSubmit(e) {
     e.preventDefault();
 
-    if (!this.state.student) {
-      return alert('Student username cannot be empty');
+    if (!this.state.name) {
+      return alert('Name cannot be empty');
     }
 
-    let student = this.state.student;
-
+    if (this.state.name !== this.props.location.state.name) {
+      alert('Class name did not match');
+      return;
+    }
+    const api = `/api/v1/classrooms/${this.props.match.params.classId}`;
     try {
-      student = await asyncUsernameToUserId(student);
-      const data = {
-        student,
-      };
-      const {classId} = this.props.match.params;
-      const api = `/api/v1/classrooms/${classId}/students`;
-      let resp = await fetch(api, {
-        method: 'POST',
+      let resp = await fetch( api, {
+        method: 'DELETE',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data),
         credentials: 'same-origin',
       });
       resp = await resp.json();
-      if ( resp.status !== 201 ) {
-        throw resp;
-      }
-      this.setState({fireRedirect: true});
+      if (resp.status !== 200) throw resp;
+      this.setState({
+        fireSuccess: true,
+      });
+      return;
     } catch (err) {
-      console.log(err);
       if (err.status) alert(err.message);
+      console.log(err);
       return;
     }
   }
@@ -64,31 +66,38 @@ class AddStudent extends Component {
   render() {
     return (
       <div>
-        <h1> Add Student </h1>
+        <h1> Delete Class </h1>
+        <h2> Are you sure? </h2>
+        <p> Enter name of your classroom to confirm. </p>
         <Form onSubmit={this.handleSubmit}>
           <FormGroup>
-            <Label>Student Username</Label>
+            <Label>Classroom Name</Label>
             <Input
-              name='student'
-              placeholder='Username'
+              name='name'
+              placeholder='Name of Classroom'
               onChange={ this.handleInputChange }
             />
           </FormGroup>
-          <Button color='primary' type='submit'>Save</Button>
+          <Button color='danger' type='submit'>Delete</Button>
           <LinkContainer to={`/classroom/${this.props.match.params.classId}`}>
             <Button className='ml-1'> Cancel</Button>
           </LinkContainer>
-
         </Form>
 
         {this.state.fireRedirect &&
           (<Redirect to={`/classroom/${this.props.match.params.classId}`}/>)}
+        {this.state.fireSuccess && (<Redirect to='/coach'/>)}
       </div>
     );
   }
 }
 
-AddStudent.propTypes = {
+DeleteClass.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       classId: PropTypes.string.isRequired,
@@ -96,4 +105,4 @@ AddStudent.propTypes = {
   }).isRequired,
 };
 
-export default AddStudent;
+export default DeleteClass;

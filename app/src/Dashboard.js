@@ -1,12 +1,6 @@
 import React, {Component} from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
-import {
-  Row,
-  Col,
-  ButtonToolbar,
-  Button,
-} from 'reactstrap';
-import {asyncUsernameToUserId} from './utility.js';
+import {Row, Col, ButtonToolbar, Button} from 'reactstrap';
 
 import Landing from './Landing';
 
@@ -18,35 +12,9 @@ export default class Dashboard extends Component {
     this.state = {
       data: [],
     };
-    this.addNewStudent = this.addNewStudent.bind(this);
     this.deleteClass = this.deleteClass.bind(this);
     this.getData = this.getData.bind(this);
     this.refreshData = this.refreshData.bind(this);
-  }
-
-  async addNewStudent(data) {
-    const id = await asyncUsernameToUserId(data.student);
-    const url = `/api/v1/classrooms/${data.classId}/students`;
-    const body = {
-      student: id,
-    };
-    try {
-      let resp = await fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: new Headers({
-          'Content-Type': 'application/json',
-        }),
-        credentials: 'same-origin',
-      });
-      resp = await resp.json();
-      if ( resp.status !== 201 ) {
-        throw resp;
-      }
-      await this.refreshData();
-    } catch (err) {
-      console.log(err);
-    }
   }
 
   async getData() {
@@ -104,7 +72,6 @@ export default class Dashboard extends Component {
         <Row>
           <Col>
             <Landing
-              onAddStudent={this.addNewStudent}
               classData={this.state.data}
               onDelete= {this.deleteClass}
               refreshData= {this.refreshData}
