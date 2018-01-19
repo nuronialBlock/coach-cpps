@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Switch, Route} from 'react-router-dom';
-import Dashboard from './Dashboard';
+
+import Dashboard from './components/dashboard/Dashboard';
 
 import ClassroomContainer from './components/classroom/ClassroomContainer.js';
 import AddClassroom from './components/classroom/AddClassroom.js';

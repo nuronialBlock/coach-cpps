@@ -4,7 +4,7 @@ import {LinkContainer} from 'react-router-bootstrap';
 import PropTypes from 'prop-types';
 import {Form, Button, Input, Label, FormGroup} from 'reactstrap';
 
-import {asyncUsernameToUserId} from '../../utility.js';
+import {asyncUsernameToUserId} from 'components/utility';
 
 class AddStudent extends Component {
   constructor(props) {

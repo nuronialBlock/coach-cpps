@@ -9,7 +9,7 @@ import {
   FormGroup,
 } from 'reactstrap';
 
-import {asyncUsernameToUserId} from '../../utility.js';
+import {asyncUsernameToUserId} from 'components/utility';
 
 class AddClassroom extends Component {
   constructor(props) {
