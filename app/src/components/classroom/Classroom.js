@@ -1,33 +1,29 @@
 import React, {Component} from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
 import {
-    Table, Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu,
+    Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu,
     DropdownItem,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
+import StudentPortal from './StudentPortal';
+
+/** Setting List */
 
 function SettingsList({classId, name}) {
   return (
     <UncontrolledDropdown>
      <DropdownToggle className='fa fa-lg fa-cog' color='light'></DropdownToggle>
      <DropdownMenu>
-
-       <DropdownItem>
-         <LinkContainer to={`/classroom/${classId}/addStudent`}>
-           <Button color='primary'> Add Student </Button>
-         </LinkContainer>
-       </DropdownItem>
-
-       <DropdownItem>
-         <LinkContainer to={{
-           pathname: `/classroom/${classId}/deleteClass`,
-           state: {
-             name: name,
-           },
-         }}>
-           <Button color='danger'> Delete Class </Button>
-         </LinkContainer>
-       </DropdownItem>
+      <LinkContainer to={{
+        pathname: `/classroom/${classId}/deleteClass`,
+        state: {
+          name: name,
+        },
+        }}>
+         <DropdownItem>
+          <Button color='danger' className='btn-block'> Delete Class </Button>
+        </DropdownItem>
+      </LinkContainer>
      </DropdownMenu>
    </UncontrolledDropdown>
  );
@@ -39,17 +35,6 @@ SettingsList.propTypes = {
 };
 
 class Classroom extends Component {
-  dataHTML() {
-    const students = this.props.students;
-    let tabulatedStudentsList = students.map((s, ind) => (
-      <tr key={s._id}>
-        <td>{ind + 1}</td>
-        <td>{s.username}</td>
-      </tr>
-    ));
-    return tabulatedStudentsList;
-  }
-
   render() {
     const {classId, name} = this.props;
     return (
@@ -62,17 +47,19 @@ class Classroom extends Component {
             <SettingsList classId={classId} name={name}/>
           </Col>
         </Row>
-        <Table>
-          <thead>
-            <tr>
-              <th> Index </th>
-              <th> Username </th>
-            </tr>
-          </thead>
-          <tbody>
-            { this.dataHTML() }
-          </tbody>
-        </Table>
+        <hr/>
+        <Row>
+          <Col>
+            <StudentPortal
+              students={this.props.students}
+              classId={classId}
+              name={name}
+            />
+          </Col>
+          <Col>
+
+          </Col>
+        </Row>
       </div>
     );
   }
