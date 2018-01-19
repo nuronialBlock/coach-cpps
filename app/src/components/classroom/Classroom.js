@@ -1,9 +1,42 @@
 import React, {Component} from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
 import {
-    Table, Row, Col, Button,
+    Table, Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu,
+    DropdownItem,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
+
+function SettingsList({classId, name}) {
+  return (
+    <UncontrolledDropdown>
+     <DropdownToggle className='fa fa-lg fa-cog' color='light'></DropdownToggle>
+     <DropdownMenu>
+
+       <DropdownItem>
+         <LinkContainer to={`/classroom/${classId}/addStudent`}>
+           <Button color='primary'> Add Student </Button>
+         </LinkContainer>
+       </DropdownItem>
+
+       <DropdownItem>
+         <LinkContainer to={{
+           pathname: `/classroom/${classId}/deleteClass`,
+           state: {
+             name: name,
+           },
+         }}>
+           <Button color='danger'> Delete Class </Button>
+         </LinkContainer>
+       </DropdownItem>
+     </DropdownMenu>
+   </UncontrolledDropdown>
+ );
+}
+
+SettingsList.propTypes = {
+  classId: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+};
 
 class Classroom extends Component {
   dataHTML() {
@@ -18,7 +51,7 @@ class Classroom extends Component {
   }
 
   render() {
-    const {classId} = this.props;
+    const {classId, name} = this.props;
     return (
       <div>
         <Row>
@@ -26,17 +59,7 @@ class Classroom extends Component {
             <h1>{this.props.name} </h1>
           </Col>
           <Col className='text-right'>
-            <LinkContainer to={`/classroom/${classId}/addStudent`}>
-              <Button color='primary'> Add Student </Button>
-            </LinkContainer>
-            <LinkContainer to={{
-              pathname: `/classroom/${classId}/deleteClass`,
-              state: {
-                name: this.props.name,
-              },
-            }}>
-              <Button color='danger' className='ml-1'> Delete Class </Button>
-            </LinkContainer>
+            <SettingsList classId={classId} name={name}/>
           </Col>
         </Row>
         <Table>
