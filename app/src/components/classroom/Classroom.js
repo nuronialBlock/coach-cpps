@@ -6,6 +6,7 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 import StudentPortal from './StudentPortal';
+import ContestPortalContainer from './ContestPortalContainer';
 
 /** Setting List */
 
@@ -57,7 +58,7 @@ class Classroom extends Component {
             />
           </Col>
           <Col>
-
+            <ContestPortalContainer classId={classId} />
           </Col>
         </Row>
       </div>
