@@ -78,7 +78,6 @@ class AddStudent extends Component {
           <LinkContainer to={`/classroom/${this.props.match.params.classId}`}>
             <Button className='ml-1'> Cancel</Button>
           </LinkContainer>
-
         </Form>
 
         {this.state.fireRedirect &&

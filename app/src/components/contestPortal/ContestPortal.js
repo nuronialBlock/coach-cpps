@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {LinkContainer} from 'react-router-bootstrap';
 import {
     Table, Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu,
@@ -8,7 +9,7 @@ import PropTypes from 'prop-types';
 
 /** Setting List */
 
-function SettingsList({classId, name}) {
+function SettingsList({classId}) {
   return (
     <UncontrolledDropdown>
      <DropdownToggle className='fa fa-lg fa-cog' color='light'></DropdownToggle>
@@ -36,7 +37,9 @@ function ContestPortal(props) {
   let tabulatedContestList = data.map((s, ind) => (
     <tr key={s._id}>
       <td>{ind + 1}</td>
-      <td>{s.name}</td>
+      <td>
+        <Link to={`/classroom/${classId}/contest/${s._id}`}> {s.name} </Link>
+      </td>
     </tr>
   ));
   return (

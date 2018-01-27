@@ -6,8 +6,11 @@ import Dashboard from 'components/dashboard/Dashboard';
 import ClassroomContainer from 'components/classroom/ClassroomContainer.js';
 import AddClassroom from 'components/classroom/AddClassroom.js';
 import DeleteClass from 'components/classroom/DeleteClass.js';
-import AddStudent from 'components/classroom/AddStudent.js';
-import RemoveStudent from 'components/classroom/RemoveStudent.js';
+
+import AddStudent from 'components/studentPortal/AddStudent.js';
+import RemoveStudent from 'components/studentPortal/RemoveStudent.js';
+
+import AddContest from 'components/contestPortal/AddContest.js';
 
 export default class Main extends Component {
   render() {
@@ -25,6 +28,9 @@ export default class Main extends Component {
               component={RemoveStudent}/>
           <Route exact path='/classroom/:classId/deleteClass'
             component={DeleteClass}/>
+
+          <Route exact path='/classroom/:classId/contest/add-contest'
+            component={AddContest}/>
         </Switch>
       </main>
     );

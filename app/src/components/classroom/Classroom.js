@@ -5,8 +5,9 @@ import {
     DropdownItem,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
-import StudentPortal from './StudentPortal';
-import ContestPortalContainer from './ContestPortalContainer';
+import StudentPortal from 'components/studentPortal/StudentPortal';
+import ContestPortalContainer from
+  'components/contestPortal/ContestPortalContainer';
 
 /** Setting List */
 
