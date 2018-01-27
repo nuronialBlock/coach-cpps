@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
+import {Redirect} from 'react-router-dom';
 import {Form, FormGroup, Label, Input, Button} from 'reactstrap';
 import PropTypes from 'prop-types';
 import StandingsPreview from './StandingsPreview';
@@ -15,6 +16,8 @@ class AddContest extends Component {
       verified: false,
       modal: false,
       rawData: '',
+      fireRedirect: false,
+      contestId: '', // New contest created
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -40,6 +43,10 @@ class AddContest extends Component {
       });
       resp = await resp.json();
       if (resp.status !== 201) throw resp;
+      this.setState({
+        fireRedirect: true,
+        contestId: resp.data._id,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -116,6 +123,8 @@ class AddContest extends Component {
           classId={this.state.classId}
           createContest={this.createContest}
         />
+
+        {this.state.fireRedirect && (<Redirect to={`/classroom/${this.state.classId}/contest/${this.state.contestId}`}/>)}
       </div>
     );
   }
