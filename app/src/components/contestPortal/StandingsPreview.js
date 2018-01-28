@@ -24,7 +24,7 @@ export default class StandingsPreview extends Component {
 
     standings = await Promise.all(standings.map(async (s) => {
       const arr = s.split(',').map((x) => x.trim());
-      const position = parseInt(arr[0]);
+      const position = parseInt(arr[0], 10);
       const username = arr[1];
       let userId;
       let previousRating;

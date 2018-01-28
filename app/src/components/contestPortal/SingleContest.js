@@ -1,25 +1,46 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
-import {LinkContainer} from 'react-router-bootstrap';
 import {
-    Table, Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu,
+    Table, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu,
     DropdownItem,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 /** Setting List */
 
-function SettingsList({classId}) {
+async function applyRating(contestId) {
+  try {
+    const api = `/api/v1/ratings/apply/contest/${contestId}`;
+    let resp = await fetch(api, {
+      method: 'PUT',
+      credentials: 'same-origin',
+    });
+    resp = await resp.json();
+    if (resp.status !== 200) throw resp;
+    alert('Successfully updated ratings');
+  } catch (err) {
+    if (err.status) alert(err.message);
+    console.log(err);
+  }
+}
+
+function SettingsList({contestId}) {
   return (
     <UncontrolledDropdown>
      <DropdownToggle className='fa fa-lg fa-cog' color='light'></DropdownToggle>
      <DropdownMenu>
 
-      <LinkContainer to={`/classroom/${classId}/contest/add-contest`}>
+      <DropdownItem>
+         <div className='btn btn-block btn-primary'
+           onClick={()=>applyRating(contestId)}>
+           Apply Rating </div>
+      </DropdownItem>
+
+      {/* <LinkContainer to={`/classroom/${classId}/contest/add-contest`}>
         <DropdownItem>
-           <Button color='primary' className='btn-block'> Add Contest </Button>
+           <Button color='danger' className='btn-block'>
+            Rollback Rating </Button>
         </DropdownItem>
-      </LinkContainer>
+      </LinkContainer> */}
 
      </DropdownMenu>
    </UncontrolledDropdown>
@@ -27,13 +48,13 @@ function SettingsList({classId}) {
 }
 
 SettingsList.propTypes = {
-  classId: PropTypes.string.isRequired,
+  contestId: PropTypes.string.isRequired,
 };
 
 /** Standings List */
 
 function SingleContest(props) {
-  const {classId, data} = props;
+  const {contestId, data} = props;
   let tabulatedContestList = data.map((s, ind) => (
     <tr key={s._id}>
       <td>{s.position}</td>
@@ -49,7 +70,7 @@ function SingleContest(props) {
           <h1>Contest Details</h1>
         </Col>
         <Col className='text-right'>
-          <SettingsList classId={classId}/>
+          <SettingsList contestId={contestId}/>
         </Col>
       </Row>
       <Table>
