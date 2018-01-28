@@ -43,6 +43,7 @@ function StudentPortal({students, classId, name}) {
     <tr key={s._id}>
       <td>{ind + 1}</td>
       <td>{s.username}</td>
+      <td>{s.currentRating}</td>
     </tr>
   ));
   return (
@@ -60,6 +61,7 @@ function StudentPortal({students, classId, name}) {
           <tr>
             <th> Index </th>
             <th> Username </th>
+            <th> Rating </th>
           </tr>
         </thead>
         <tbody>
