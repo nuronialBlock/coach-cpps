@@ -41,15 +41,21 @@ class Classroom extends Component {
     const {classId, name} = this.props;
     return (
       <div>
-        <Row>
-          <Col>
-            <h1>{this.props.name} </h1>
+        <Row className='align-items-center'>
+          <Col xs='2' className='text-left'>
+            <LinkContainer to='/coach'>
+              <div className='btn'>
+                <i className='fa fa-lg fa-arrow-left'></i>
+              </div>
+            </LinkContainer>
           </Col>
-          <Col className='text-right'>
+          <Col xs='8'>
+            <h1 className='text-center'>{this.props.name} </h1>
+          </Col>
+          <Col xs='2' className='text-right'>
             <SettingsList classId={classId} name={name}/>
           </Col>
         </Row>
-        <hr/>
         <Row>
           <Col>
             <StudentPortal

@@ -46,7 +46,7 @@ function ContestPortal(props) {
     <div className='text-center'>
       <Row>
         <Col>
-          <h1>Contest Portal</h1>
+          <h2>Contest Portal</h2>
         </Col>
         <Col className='text-right'>
           <SettingsList classId={classId}/>

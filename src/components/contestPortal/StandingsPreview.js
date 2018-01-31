@@ -32,7 +32,7 @@ export default class StandingsPreview extends Component {
         userId = await asyncUsernameToUserId(username);
         const ratingApiQs = qs.stringify({
           classroomId: classId,
-          userId,
+          userIds: [userId], // TODO: Reduce number of api calls
         });
         const ratingApi = `/api/v1/ratings?${ratingApiQs}`;
         let resp = await fetch(ratingApi, {
@@ -40,7 +40,7 @@ export default class StandingsPreview extends Component {
         });
         resp = await resp.json();
         if (resp.status === 200 || resp.status === 202) {
-          previousRating = resp.data.currentRating;
+          previousRating = resp.data[0].currentRating;
         } else throw resp;
       } catch (err) {
         console.log(err);

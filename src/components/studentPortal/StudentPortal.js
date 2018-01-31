@@ -50,7 +50,7 @@ function StudentPortal({students, classId, name}) {
     <div className='text-center'>
       <Row>
         <Col>
-          <h1>Student Portal</h1>
+          <h2>Student Portal</h2>
         </Col>
         <Col className='text-right'>
           <SettingsList classId={classId} name={name}/>
