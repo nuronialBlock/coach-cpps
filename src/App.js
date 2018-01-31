@@ -7,8 +7,8 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div>
-        <Header title='Coach Dashboard'/>
         <Container>
+          <Header/>
           <Main/>
         </Container>
       </div>

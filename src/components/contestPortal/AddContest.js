@@ -12,7 +12,7 @@ class AddContest extends Component {
       classId: this.props.match.params.classId,
       contestName: '',
       contestUrl: '',
-      contestStandings: '1, forthright48\n2, aminul',
+      contestStandings: '',
       verified: false,
       modal: false,
       rawData: '',
@@ -124,7 +124,9 @@ class AddContest extends Component {
           createContest={this.createContest}
         />
 
-        {this.state.fireRedirect && (<Redirect to={`/classroom/${this.state.classId}/contest/${this.state.contestId}`}/>)}
+        {this.state.fireRedirect && (<Redirect
+          to={`/classroom/${this.state.classId}/contest/${this.state.contestId}`
+        }/>)}
       </div>
     );
   }

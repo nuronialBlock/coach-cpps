@@ -1,8 +1,26 @@
 import React, {Component} from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
-import {Row, Col, ButtonToolbar, Button} from 'reactstrap';
+import {
+    Row, Col, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu,
+    DropdownItem,
+} from 'reactstrap';
 
 import ClassroomList from './ClassroomList';
+
+function SettingsList() {
+  return (
+    <UncontrolledDropdown>
+     <DropdownToggle className='fa fa-lg fa-cog' color='light'></DropdownToggle>
+     <DropdownMenu>
+      <LinkContainer to='/coach/addClassroom'>
+         <DropdownItem>
+          <Button color='primary' className='btn-block'> Add Class </Button>
+        </DropdownItem>
+      </LinkContainer>
+     </DropdownMenu>
+   </UncontrolledDropdown>
+ );
+}
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -38,11 +56,14 @@ export default class Dashboard extends Component {
   render() {
     return (
       <div>
-        <ButtonToolbar>
-          <LinkContainer to='/coach/addClassroom'>
-            <Button color='primary'>ADD Class</Button>
-          </LinkContainer>
-        </ButtonToolbar>
+        <Row>
+          <Col>
+            <h1>Classrooms</h1>
+          </Col>
+          <Col className='text-right'>
+            <SettingsList/>
+          </Col>
+        </Row>
 
         <Row>
           <Col>

@@ -1,26 +1,45 @@
 import React, {Component} from 'react';
 import {LinkContainer} from 'react-router-bootstrap';
 import {
-  Container,
-  Navbar,
-  NavbarBrand,
+  Nav, NavItem, Dropdown, DropdownItem, DropdownToggle, DropdownMenu, NavLink,
 } from 'reactstrap';
-import PropTypes from 'prop-types';
 
 export default class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      dropdownOpen: false,
+    };
+  }
+
+  toggle() {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen,
+    });
+  }
+
   render() {
     return (
-      <Navbar color='faded' light>
-        <Container>
-          <LinkContainer to='/coach'>
-            <NavbarBrand>{this.props.title}</NavbarBrand>
-          </LinkContainer>
-        </Container>
-      </Navbar>
+      <div>
+        <h1 className='text-center'> CPPS </h1>
+        <Nav tabs>
+          <NavItem>
+            <LinkContainer to='/coach'>
+              <NavLink>Dashboard</NavLink>
+            </LinkContainer>
+          </NavItem>
+          <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+            <DropdownToggle nav caret>
+              Tools
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>Who Solved It?</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </Nav>
+      </div>
     );
   }
 }
-
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
-};
