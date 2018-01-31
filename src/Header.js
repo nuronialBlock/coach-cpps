@@ -30,6 +30,8 @@ export default class Header extends Component {
               <NavLink>Dashboard</NavLink>
             </LinkContainer>
           </NavItem>
+
+          {/* Tools */}
           <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
             <DropdownToggle nav caret>
               Tools
@@ -38,6 +40,7 @@ export default class Header extends Component {
               <DropdownItem>Who Solved It?</DropdownItem>
             </DropdownMenu>
           </Dropdown>
+
         </Nav>
       </div>
     );
