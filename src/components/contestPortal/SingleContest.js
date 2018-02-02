@@ -79,6 +79,12 @@ function SingleContest(props) {
       <td>{s.newRating}</td>
     </tr>
   ));
+
+  const csv = data.map((x)=>{
+    return `${x.position}, ${x.username}`;
+  });
+  console.log(csv.join('\n'));
+
   return (
     <div className='text-center'>
       <Row>

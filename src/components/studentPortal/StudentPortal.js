@@ -39,6 +39,9 @@ SettingsList.propTypes = {
 /** Student List */
 
 function StudentPortal({students, classId, name}) {
+  students.sort((a, b)=>{
+    return b.currentRating - a.currentRating;
+  });
   let tabulatedStudentsList = students.map((s, ind) => (
     <tr key={s._id}>
       <td>{ind + 1}</td>
