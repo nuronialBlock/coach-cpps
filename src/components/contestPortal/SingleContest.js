@@ -23,7 +23,7 @@ async function applyRating(contestId) {
   }
 }
 
-function SettingsList({contestId}) {
+function SettingsList({contestId, deleteStandings}) {
   return (
     <UncontrolledDropdown>
      <DropdownToggle className='fa fa-lg fa-cog' color='light'></DropdownToggle>
@@ -33,6 +33,12 @@ function SettingsList({contestId}) {
          <div className='btn btn-block btn-primary'
            onClick={()=>applyRating(contestId)}>
            Apply Rating </div>
+      </DropdownItem>
+
+      <DropdownItem>
+         <div className='btn btn-block btn-danger'
+           onClick={()=>deleteStandings(contestId)}>
+           Delete Standings</div>
       </DropdownItem>
 
       {/* <LinkContainer to={`/classroom/${classId}/contest/add-contest`}>
@@ -49,12 +55,13 @@ function SettingsList({contestId}) {
 
 SettingsList.propTypes = {
   contestId: PropTypes.string.isRequired,
+  deleteStandings: PropTypes.func.isRequired,
 };
 
 /** Standings List */
 
 function SingleContest(props) {
-  const {contestId, data} = props;
+  const {contestId, data, deleteStandings} = props;
   let tabulatedContestList = data.map((s, ind) => (
     <tr key={s._id}>
       <td>{s.position}</td>
@@ -70,7 +77,9 @@ function SingleContest(props) {
           <h1>Contest Details</h1>
         </Col>
         <Col className='text-right'>
-          <SettingsList contestId={contestId}/>
+          <SettingsList
+            contestId={contestId} deleteStandings={deleteStandings}
+          />
         </Col>
       </Row>
       <Table>
@@ -100,6 +109,7 @@ SingleContest.propTypes = {
     previousRating: PropTypes.number.isRequired,
     newRating: PropTypes.number.isRequired,
   })).isRequired,
+  deleteStandings: PropTypes.func.isRequired,
 };
 
 export default SingleContest;

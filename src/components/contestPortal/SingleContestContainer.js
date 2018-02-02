@@ -7,8 +7,27 @@ class SingleContestContainer extends Component {
     super(props);
 
     this.state = {
-      data: [],
+      data: [], // Array of standings
     };
+
+    this.deleteStandings = this.deleteStandings.bind(this);
+  }
+
+  async deleteStandings(contestId) {
+    try {
+      const api = `/api/v1/contests/${contestId}`;
+      let resp = await fetch(api, {
+        method: 'DELETE',
+        credentials: 'same-origin',
+      });
+      resp = await resp.json();
+      if (resp.status !== 200) throw resp;
+      alert('All standings have been removed');
+      this.setState({data: []});
+    } catch (err) {
+      if (err.status) alert(err.message);
+      console.log(err);
+    }
   }
 
   async componentWillMount() {
@@ -36,6 +55,7 @@ class SingleContestContainer extends Component {
         classId={classId}
         contestId={contestId}
         data={this.state.data}
+        deleteStandings={this.deleteStandings}
       />
     );
   }
