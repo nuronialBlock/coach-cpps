@@ -3,7 +3,6 @@ import {LinkContainer} from 'react-router-bootstrap';
 import {Redirect} from 'react-router-dom';
 import {Form, FormGroup, Label, Input, Button} from 'reactstrap';
 import PropTypes from 'prop-types';
-import StandingsPreview from './StandingsPreview';
 
 class AddContest extends Component {
   constructor(props) {
@@ -12,26 +11,30 @@ class AddContest extends Component {
       classId: this.props.match.params.classId,
       contestName: '',
       contestUrl: '',
-      contestStandings: '',
-      verified: false,
-      modal: false,
-      rawData: '',
       fireRedirect: false,
       contestId: '', // New contest created
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.createContest = this.createContest.bind(this);
   }
 
-  async createContest(standings) {
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  async handleSubmit(event) {
+    event.preventDefault();
     const data = {
       name: this.state.contestName,
       link: this.state.contestUrl,
       classroomId: this.state.classId,
-      standings,
     };
     try {
       const api = '/api/v1/contests';
@@ -50,31 +53,6 @@ class AddContest extends Component {
     } catch (err) {
       console.log(err);
     }
-  }
-
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value,
-    });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-
-    this.setState({
-      rawData: this.state.contestStandings,
-    });
-    this.toggle();
-  }
-
-  toggle() {
-    this.setState({
-      modal: !this.state.modal,
-    });
   }
 
   render() {
@@ -100,29 +78,11 @@ class AddContest extends Component {
               onChange={ this.handleInputChange }
             />
           </FormGroup>
-          <FormGroup>
-            <Label>Contest Standings</Label>
-            <Input
-              type='textarea'
-              name='contestStandings'
-              onChange={ this.handleInputChange }
-              placeholder='position, username'
-              value={this.state.contestStandings}
-            />
-          </FormGroup>
-          <Button color='primary' type='submit'>Preview</Button>
+          <Button color='primary' type='submit'>Create</Button>
           <LinkContainer to={`/classroom/${this.state.classId}`}>
             <Button className='ml-1'> Cancel</Button>
           </LinkContainer>
         </Form>
-
-        <StandingsPreview
-          modalState={this.state.modal}
-          toggle={this.toggle}
-          rawData={this.state.rawData}
-          classId={this.state.classId}
-          createContest={this.createContest}
-        />
 
         {this.state.fireRedirect && (<Redirect
           to={`/classroom/${this.state.classId}/contest/${this.state.contestId}`

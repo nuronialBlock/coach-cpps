@@ -87,7 +87,7 @@ export default class StandingsPreview extends Component {
   }
 
   render() {
-    const {modalState, toggle, createContest} = this.props;
+    const {modalState, toggle, addStandings} = this.props;
     return (
       <Modal isOpen={modalState} toggle={toggle} className='modal-lg'>
         <ModalHeader>Standings Preview</ModalHeader>
@@ -96,9 +96,9 @@ export default class StandingsPreview extends Component {
         }}>{this.formatStandings()}</ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={()=>{
-            createContest(this.state.standings);
+            addStandings(this.state.standings);
           }}>
-            Insert Contest</Button>
+            Add Standings</Button>
           <Button color="secondary" onClick={toggle}>Cancel</Button>
         </ModalFooter>
       </Modal>
@@ -110,5 +110,5 @@ StandingsPreview.propTypes = {
   toggle: PropTypes.func.isRequired,
   rawData: PropTypes.string.isRequired,
   classId: PropTypes.string.isRequired,
-  createContest: PropTypes.func.isRequired,
+  addStandings: PropTypes.func.isRequired,
 };

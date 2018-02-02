@@ -14,6 +14,7 @@ import RemoveStudent from 'components/studentPortal/RemoveStudent.js';
 import AddContest from 'components/contestPortal/AddContest.js';
 import SingleContestContainer from
   'components/contestPortal/SingleContestContainer.js';
+import {AddStandings} from 'components/contestPortal/AddStandings.js';
 
 export default class Main extends Component {
   render() {
@@ -34,8 +35,12 @@ export default class Main extends Component {
           <Route exact path='/classroom/:classId/whoSolvedIt'
             component={WhoSolvedIt}/>
 
+          {/* Contest Portal */}
           <Route exact path='/classroom/:classId/contest/add-contest'
             component={AddContest}/>
+          <Route
+            exact path='/classroom/:classId/contest/:contestId/add-standings'
+            component={AddStandings}/>
           <Route exact path='/classroom/:classId/contest/:contestId'
             component={SingleContestContainer}/>
         </Switch>

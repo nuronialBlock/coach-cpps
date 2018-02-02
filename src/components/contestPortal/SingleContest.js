@@ -1,4 +1,5 @@
 import React from 'react';
+import {LinkContainer} from 'react-router-bootstrap';
 import {
     Table, Row, Col, UncontrolledDropdown, DropdownToggle, DropdownMenu,
     DropdownItem,
@@ -23,7 +24,7 @@ async function applyRating(contestId) {
   }
 }
 
-function SettingsList({contestId, deleteStandings}) {
+function SettingsList({contestId, classId, deleteStandings}) {
   return (
     <UncontrolledDropdown>
      <DropdownToggle className='fa fa-lg fa-cog' color='light'></DropdownToggle>
@@ -34,6 +35,13 @@ function SettingsList({contestId, deleteStandings}) {
            onClick={()=>applyRating(contestId)}>
            Apply Rating </div>
       </DropdownItem>
+
+      <LinkContainer to={
+          `/classroom/${classId}/contest/${contestId}/add-standings`}>
+        <DropdownItem>
+          <div className='btn btn-block btn-primary'>Add Standings</div>
+        </DropdownItem>
+      </LinkContainer>
 
       <DropdownItem>
          <div className='btn btn-block btn-danger'
@@ -55,13 +63,14 @@ function SettingsList({contestId, deleteStandings}) {
 
 SettingsList.propTypes = {
   contestId: PropTypes.string.isRequired,
+  classId: PropTypes.string.isRequired,
   deleteStandings: PropTypes.func.isRequired,
 };
 
 /** Standings List */
 
 function SingleContest(props) {
-  const {contestId, data, deleteStandings} = props;
+  const {contestId, data, deleteStandings, classId} = props;
   let tabulatedContestList = data.map((s, ind) => (
     <tr key={s._id}>
       <td>{s.position}</td>
@@ -78,7 +87,9 @@ function SingleContest(props) {
         </Col>
         <Col className='text-right'>
           <SettingsList
-            contestId={contestId} deleteStandings={deleteStandings}
+            contestId={contestId}
+            classId={classId}
+            deleteStandings={deleteStandings}
           />
         </Col>
       </Row>
