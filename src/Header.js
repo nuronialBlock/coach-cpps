@@ -1,10 +1,21 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {LinkContainer} from 'react-router-bootstrap';
 import {
   Nav, NavItem, Dropdown, DropdownItem, DropdownToggle, DropdownMenu, NavLink,
 } from 'reactstrap';
 
-export default class Header extends Component {
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {};
+}
+
+class Header extends Component {
   constructor(props) {
     super(props);
 
@@ -41,8 +52,13 @@ export default class Header extends Component {
             </DropdownMenu>
           </Dropdown>
 
+          <NavItem className="ml-auto">
+            <NavLink>{this.props.user.username}</NavLink>
+          </NavItem>
         </Nav>
       </div>
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
