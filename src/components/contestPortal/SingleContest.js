@@ -70,7 +70,7 @@ SettingsList.propTypes = {
 /** Standings List */
 
 function SingleContest(props) {
-  const {contestId, data, deleteStandings, classId} = props;
+  const {contestId, data, deleteStandings, classId, owner} = props;
   let tabulatedContestList = data.map((s, ind) => (
     <tr key={s._id}>
       <td>{s.position}</td>
@@ -92,11 +92,15 @@ function SingleContest(props) {
           <h1>Contest Details</h1>
         </Col>
         <Col className='text-right'>
-          <SettingsList
-            contestId={contestId}
-            classId={classId}
-            deleteStandings={deleteStandings}
-          />
+          {
+            owner?
+            <SettingsList
+              contestId={contestId}
+              classId={classId}
+              deleteStandings={deleteStandings}
+            />:
+            <span></span>
+          }
         </Col>
       </Row>
       <Table>
@@ -127,6 +131,7 @@ SingleContest.propTypes = {
     newRating: PropTypes.number.isRequired,
   })).isRequired,
   deleteStandings: PropTypes.func.isRequired,
+  owner: PropTypes.bool.isRequired,
 };
 
 export default SingleContest;
