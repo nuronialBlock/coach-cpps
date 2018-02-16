@@ -38,7 +38,7 @@ SettingsList.propTypes = {
 
 class Classroom extends Component {
   render() {
-    const {classId, name} = this.props;
+    const {classId, name, owner} = this.props;
     return (
       <div>
         <Row className='align-items-center'>
@@ -53,7 +53,11 @@ class Classroom extends Component {
             <h1 className='text-center'>{this.props.name} </h1>
           </Col>
           <Col xs='2' className='text-right'>
-            <SettingsList classId={classId} name={name}/>
+            {
+              owner?
+              <SettingsList classId={classId} name={name}/>:
+              <span></span>
+            }
           </Col>
         </Row>
         <Row>
@@ -62,10 +66,11 @@ class Classroom extends Component {
               students={this.props.students}
               classId={classId}
               name={name}
+              owner={owner}
             />
           </Col>
           <Col>
-            <ContestPortalContainer classId={classId} />
+            <ContestPortalContainer classId={classId} owner={owner} />
           </Col>
         </Row>
       </div>
@@ -81,6 +86,7 @@ Classroom.propTypes = {
     _id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
   })).isRequired,
+  owner: PropTypes.bool.isRequired,
 };
 
 export default Classroom;

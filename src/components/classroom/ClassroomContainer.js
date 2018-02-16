@@ -1,7 +1,14 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Classroom from './Classroom.js';
 import qs from 'qs';
+
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+  };
+}
 
 class ClassroomContainer extends Component {
   constructor(props) {
@@ -10,6 +17,7 @@ class ClassroomContainer extends Component {
     this.state = {
       students: [],
       classId: this.props.match.params.classId,
+      coach: {},
       name: '',
     };
   }
@@ -50,6 +58,7 @@ class ClassroomContainer extends Component {
       this.setState({
         students: resp.data.students,
         name: resp.data.name,
+        coach: resp.data.coach,
       });
     } catch (err) {
       if (err.status) alert(err.message);
@@ -63,6 +72,9 @@ class ClassroomContainer extends Component {
         name={this.state.name}
         classId={this.state.classId}
         students={this.state.students}
+        user={this.props.user}
+        coach={this.state.coach}
+        owner={this.state.coach._id === this.props.user.userId}
       />
     );
   }
@@ -74,7 +86,10 @@ ClassroomContainer.propTypes = {
       classId: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  user: PropTypes.shape({
+    userId: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 
-export default ClassroomContainer;
+export default connect(mapStateToProps)(ClassroomContainer);

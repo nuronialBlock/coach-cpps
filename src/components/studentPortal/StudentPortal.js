@@ -38,7 +38,7 @@ SettingsList.propTypes = {
 
 /** Student List */
 
-function StudentPortal({students, classId, name}) {
+function StudentPortal({students, classId, name, owner}) {
   students.sort((a, b)=>{
     return b.currentRating - a.currentRating;
   });
@@ -55,9 +55,13 @@ function StudentPortal({students, classId, name}) {
         <Col>
           <h2>Student Portal</h2>
         </Col>
-        <Col className='text-right'>
-          <SettingsList classId={classId} name={name}/>
-        </Col>
+        {
+          owner?
+          <Col className='text-right'>
+            <SettingsList classId={classId} name={name}/>
+          </Col>:
+          <span></span>
+        }
       </Row>
       <Table>
         <thead>
@@ -82,6 +86,7 @@ StudentPortal.propTypes = {
     _id: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
   })).isRequired,
+  owner: PropTypes.bool.isRequired,
 };
 
 export default StudentPortal;

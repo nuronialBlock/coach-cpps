@@ -33,7 +33,7 @@ SettingsList.propTypes = {
 /** Contest List */
 
 function ContestPortal(props) {
-  const {classId, data} = props;
+  const {classId, data, owner} = props;
   let tabulatedContestList = data.map((s, ind) => (
     <tr key={s._id}>
       <td>{ind + 1}</td>
@@ -48,9 +48,13 @@ function ContestPortal(props) {
         <Col>
           <h2>Contest Portal</h2>
         </Col>
-        <Col className='text-right'>
-          <SettingsList classId={classId}/>
-        </Col>
+        {
+          owner?
+          <Col className='text-right'>
+            <SettingsList classId={classId}/>
+          </Col>:
+          <span></span>
+        }
       </Row>
       <Table>
         <thead>
@@ -73,6 +77,7 @@ ContestPortal.propTypes = {
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   })).isRequired,
+  owner: PropTypes.bool.isRequired,
 };
 
 export default ContestPortal;

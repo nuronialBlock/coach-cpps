@@ -35,6 +35,7 @@ class ContestPortalContainer extends Component {
       <ContestPortal
         classId={this.state.classId}
         data={this.state.data}
+        {...this.props}
       />
     );
   }
