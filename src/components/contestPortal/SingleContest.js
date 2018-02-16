@@ -77,13 +77,9 @@ function SingleContest(props) {
       <td>{s.username}</td>
       <td>{s.previousRating}</td>
       <td>{s.newRating}</td>
+      <td>{s.newRating-s.previousRating}</td>
     </tr>
   ));
-
-  const csv = data.map((x)=>{
-    return `${x.position}, ${x.username}`;
-  });
-  console.log(csv.join('\n'));
 
   return (
     <div className='text-center'>
@@ -110,6 +106,7 @@ function SingleContest(props) {
             <th> Username </th>
             <th> Previous Rating </th>
             <th> New Rating </th>
+            <th> Delta </th>
           </tr>
         </thead>
         <tbody>
