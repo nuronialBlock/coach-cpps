@@ -77,10 +77,12 @@ class Header extends Component {
 
           <span className="ml-auto"></span>
           <NavItem>
-            <NavLink href={`/user/profile/${username}`}>
-              <i className='fa fa-user mr-1'></i>
-              Profile
-            </NavLink>
+            <LinkContainer to={`/users/profile/${username}`}>
+              <NavLink>
+                <i className='fa fa-user mr-1'></i>
+                Profile
+              </NavLink>
+            </LinkContainer>
           </NavItem>
           <NavItem>
             <NavLink href='/user/logout'>

@@ -16,6 +16,9 @@ import SingleContestContainer from
   'components/contestPortal/SingleContestContainer.js';
 import {AddStandings} from 'components/contestPortal/AddStandings.js';
 
+import UserProfileContainer from
+  'components/userProfile/UserProfileContainer.js';
+
 export default class Main extends Component {
   render() {
     return (
@@ -43,6 +46,11 @@ export default class Main extends Component {
             component={AddStandings}/>
           <Route exact path='/classroom/:classId/contest/:contestId'
             component={SingleContestContainer}/>
+
+          {/* User Portal */}
+          <Route exact path='/users/profile/:username'
+            component={UserProfileContainer}/>
+
         </Switch>
       </main>
     );

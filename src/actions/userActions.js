@@ -15,6 +15,7 @@ export function fetchUser() {
       });
       resp = await resp.json();
       if (resp.status !== 200) throw resp;
+      resp.data.login = true;
       dispatch(setUser(resp.data));
     } catch (err) {
       console.error(`Failed to fetch: ${err}`);
