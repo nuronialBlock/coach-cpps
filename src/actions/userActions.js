@@ -14,7 +14,8 @@ export function fetchUser() {
         credentials: 'same-origin',
       });
       resp = await resp.json();
-      dispatch(setUser(resp));
+      if (resp.status !== 200) throw resp;
+      dispatch(setUser(resp.data));
     } catch (err) {
       console.error(`Failed to fetch: ${err}`);
     }

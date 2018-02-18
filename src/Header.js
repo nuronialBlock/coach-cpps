@@ -5,6 +5,7 @@ import {LinkContainer} from 'react-router-bootstrap';
 import {
   Nav, NavItem, Dropdown, DropdownItem, DropdownToggle, DropdownMenu, NavLink,
 } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 function mapStateToProps(state) {
   return {
@@ -37,6 +38,7 @@ class Header extends Component {
     const isClassroomRegex = /^\/classroom/;
     const isClassroom = isClassroomRegex.exec(path)?true:false;
     const classId = path.split('/')[2];
+    const {username} = this.props.user;
 
     const tools = (
       <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -75,13 +77,30 @@ class Header extends Component {
 
           <span className="ml-auto"></span>
           <NavItem>
-            <NavLink>{this.props.user.username}</NavLink>
+            <NavLink href={`/user/profile/${username}`}>
+              <i className='fa fa-user mr-1'></i>
+              Profile
+            </NavLink>
           </NavItem>
-
+          <NavItem>
+            <NavLink href='/user/logout'>
+              <i className='fa fa-sign-out'></i>
+              Logout
+            </NavLink>
+          </NavItem>
         </Nav>
       </div>
     );
   }
 }
+
+Header.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }),
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+  }),
+};
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

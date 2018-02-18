@@ -5,6 +5,7 @@ const defaultUser = {
   username: '',
   userId: '',
   status: '',
+  login: false,
 };
 
 export default function user(state=defaultUser, action) {
