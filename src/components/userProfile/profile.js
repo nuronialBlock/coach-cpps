@@ -2,10 +2,48 @@ import React from 'react';
 import {Row, Col, ListGroup, ListGroupItem, Table} from 'reactstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import {PropTypes} from 'prop-types';
+import {
+  RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
+  ResponsiveContainer,
+} from 'recharts';
+
+function DrawRadarChart({userRootStats}) {
+  if ( !userRootStats ) {
+    return (
+      <span>Loading</span>
+    );
+  }
+
+  const children = userRootStats.children;
+  const data = children.map((child)=>{
+    const value = child.total? child.user/child.total: 0;
+    return {
+      subject: child.title,
+      A: value,
+    };
+  });
+
+  return (
+    <ResponsiveContainer width='100%' aspect={4.0/3.0}>
+      <RadarChart data={data}>
+        <PolarGrid />
+        <PolarAngleAxis dataKey="subject" />
+        <PolarRadiusAxis domain={[0, 1]}/>
+        <Radar dataKey="A" stroke='#8884d8' fill='#8884d8'
+          fillOpacity={0.6} />
+        </RadarChart>
+    </ResponsiveContainer>
+  );
+}
+
+DrawRadarChart.propTypes = {
+  userRootStats: PropTypes.shape(),
+};
 
 export function Profile({user, classrooms, displayUser}) {
   const loadingInfo = displayUser.username === undefined;
   const owner = user.username === displayUser.username;
+  const {userRootStats} = displayUser;
 
   const personalInfo = loadingInfo? <span>Loading</span>: (
     <div>
@@ -85,9 +123,17 @@ export function Profile({user, classrooms, displayUser}) {
             <h4>Personal Info</h4>
             {personalInfo}
           </div>
-          <div className="mt-2">
+        </Col>
+        <Col className="text-center">
+          <div>
             <h4>Classrooms</h4>
             {classroomPortal}
+          </div>
+        </Col>
+        <Col className="text-center" xs={12}>
+          <div>
+            <h4>Overview</h4>
+            <DrawRadarChart userRootStats={userRootStats}/>
           </div>
         </Col>
         <Col className="text-center">

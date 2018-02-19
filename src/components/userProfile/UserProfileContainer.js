@@ -29,9 +29,18 @@ class UserProfileContainer extends Component {
       resp = await resp.json();
 
       if (resp.status !== 200) throw resp;
+      const displayUser = resp.data;
+
+      resp = await fetch(`/api/v1/users/${username}/root-stats`, {
+        credentials: 'same-origin',
+      });
+      resp = await resp.json();
+      const userRootStats = resp.data;
+
+      displayUser.userRootStats = userRootStats;
 
       this.setState({
-        displayUser: resp.data,
+        displayUser: displayUser,
       });
     } catch (err) {
       if (err.status) alert(err.message);
