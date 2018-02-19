@@ -46,37 +46,34 @@ export function Profile({user, classrooms, displayUser}) {
   const {userRootStats} = displayUser;
 
   const personalInfo = loadingInfo? <span>Loading</span>: (
-    <div>
-      <ListGroup className="d-inline-flex">
-        {
-          owner?
-          <ListGroupItem>
-            <i className="fa fa-envelope"></i> {user.email}
-          </ListGroupItem>:
-          <span></span>
+    <ListGroup className="d-inline-flex">
+      {
+        owner?
+        <ListGroupItem>
+          <i className="fa fa-envelope"></i> {user.email}
+        </ListGroupItem>: ''
+      }
+      <ListGroupItem>
+        <i className="fa fa-user"></i> {displayUser.username}
+      </ListGroupItem>
+      <ListGroupItem>
+        <i className="fa fa-key"></i> Change Password
+      </ListGroupItem>
+      <ListGroupItem>
+        <i className="fa fa-users"></i> {
+          displayUser.status[0].toUpperCase().slice(0, 1) +
+          displayUser.status.slice(1)
         }
-        <ListGroupItem>
-          <i className="fa fa-user"></i> {displayUser.username}
-        </ListGroupItem>
-        <ListGroupItem>
-          <i className="fa fa-key"></i> Change Password
-        </ListGroupItem>
-        <ListGroupItem>
-          <i className="fa fa-users"></i> {
-            displayUser.status[0].toUpperCase().slice(0, 1) +
-            displayUser.status.slice(1)
-          }
-        </ListGroupItem>
-      </ListGroup>
-    </div>
+      </ListGroupItem>
+    </ListGroup>
   );
 
   const classroomPortal = classrooms.length ? (
-    <ListGroup>
+    <ListGroup className="d-inline-flex">
       {classrooms.map((val, index)=>{
         return (
           <LinkContainer to={`/classroom/${val._id}`} key={val._id}>
-            <ListGroupItem>
+            <ListGroupItem className="btn-link">
               {`${val.coach.username}/${val.name}`}
             </ListGroupItem>
           </LinkContainer>

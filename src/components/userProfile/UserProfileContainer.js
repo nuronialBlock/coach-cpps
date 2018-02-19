@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Profile} from './profile.js';
+import qs from 'qs';
 
 function mapStateToProps(state) {
   return {
@@ -14,6 +15,7 @@ class UserProfileContainer extends Component {
     super(props);
 
     this.state = {
+      userId: '',
       displayUser: {},
       classrooms: [],
     };
@@ -36,11 +38,32 @@ class UserProfileContainer extends Component {
       });
       resp = await resp.json();
       const userRootStats = resp.data;
-
       displayUser.userRootStats = userRootStats;
 
+      resp = await fetch(`/api/v1/users/username-userId/${username}`, {
+        credentials: 'same-origin',
+      });
+      resp = await resp.json();
+      const userId = resp.data;
+
+      const query = {
+        student: userId,
+        select: '_id name coach',
+        populate: ['coach', 'username'],
+      };
+
+      resp = await fetch(`/api/v1/classrooms?${qs.stringify(query)}`, {
+        credentials: 'same-origin',
+      });
+      resp = await resp.json();
+      const classrooms = resp.data;
+
+      console.log(classrooms);
+
       this.setState({
-        displayUser: displayUser,
+        displayUser,
+        userId,
+        classrooms,
       });
     } catch (err) {
       if (err.status) alert(err.message);
