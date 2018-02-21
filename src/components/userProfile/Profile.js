@@ -1,11 +1,13 @@
 import React from 'react';
-import {Row, Col, ListGroup, ListGroupItem, Table} from 'reactstrap';
+import {Row, Col, ListGroup, ListGroupItem} from 'reactstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import {PropTypes} from 'prop-types';
 import {
   RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
   ResponsiveContainer,
 } from 'recharts';
+
+import {OJSolve} from './OJSolve.js';
 
 function DrawRadarChart({userRootStats}) {
   if ( !userRootStats ) {
@@ -40,7 +42,7 @@ DrawRadarChart.propTypes = {
   userRootStats: PropTypes.shape(),
 };
 
-export function Profile({user, classrooms, displayUser}) {
+export function Profile({user, classrooms, displayUser, updateOjStats}) {
   const loadingInfo = displayUser.username === undefined;
   const owner = user.username === displayUser.username;
   const {userRootStats} = displayUser;
@@ -82,33 +84,6 @@ export function Profile({user, classrooms, displayUser}) {
     </ListGroup>):
     <span>Not enrolled in any class</span>;
 
-  const ojSolve = displayUser.ojStats? (
-    <Table>
-      <thead>
-        <tr>
-          <th>Index</th>
-          <th>OJ</th>
-          <th>UID</th>
-          <th>Solve</th>
-        </tr>
-      </thead>
-      <tbody>
-        {displayUser.ojStats.map((oj, index)=>{
-          return (
-            <tr key={oj._id}>
-              <td>{index}</td>
-              <td>{oj.ojname}</td>
-              <td>{oj.userIds[0]}</td>
-              <td>{oj.solveCount}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </Table>
-  ): (
-    <span>Loading</span>
-  );
-
   return (
     <div>
       <div className="text-center">
@@ -134,16 +109,7 @@ export function Profile({user, classrooms, displayUser}) {
           </div>
         </Col>
         <Col className="text-center">
-          <Row>
-            <Col xs="2"></Col>
-            <Col xs="8">
-              <h4>Solve Count</h4>
-            </Col>
-            <Col xs="2">
-              <i className="fa fa-refresh" title="Sync All OJ"></i>
-            </Col>
-          </Row>
-          {ojSolve}
+          <OJSolve displayUser={displayUser} updateOjStats={updateOjStats}/>
         </Col>
       </Row>
     </div>
@@ -154,4 +120,5 @@ Profile.propTypes = {
   user: PropTypes.shape(),
   classrooms: PropTypes.arrayOf(PropTypes.shape()),
   displayUser: PropTypes.shape(),
+  updateOjStats: PropTypes.func.isRequired,
 };

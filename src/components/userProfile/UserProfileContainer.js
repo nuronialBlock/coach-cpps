@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Profile} from './profile.js';
+import {Profile} from './Profile.js';
 import qs from 'qs';
 
 function mapStateToProps(state) {
@@ -19,10 +19,22 @@ class UserProfileContainer extends Component {
       displayUser: {},
       classrooms: [],
     };
+
+    this.updateOjStats = this.updateOjStats.bind(this);
   }
 
-  async componentWillMount() {
-    const {username} = this.props.match.params;
+  updateOjStats(newOjStats) {
+    const displayUser = this.state.displayUser;
+    this.setState({
+      displayUser: {
+        ...displayUser,
+        ojStats: newOjStats,
+      },
+    });
+  }
+
+  async loadProfile(currentProps) {
+    const {username} = currentProps.match.params;
 
     try {
       let resp = await fetch(`/api/v1/users/${username}`, {
@@ -58,8 +70,6 @@ class UserProfileContainer extends Component {
       resp = await resp.json();
       const classrooms = resp.data;
 
-      console.log(classrooms);
-
       this.setState({
         displayUser,
         userId,
@@ -71,11 +81,21 @@ class UserProfileContainer extends Component {
     }
   }
 
+  async componentWillMount() {
+    this.loadProfile(this.props);
+  }
+
+  async componentWillReceiveProps(nextProps) {
+    if (nextProps === this.props) return;
+    this.loadProfile(nextProps);
+  }
+
   render() {
     return (
       <Profile {...this.props}
         displayUser={this.state.displayUser}
         classrooms={this.state.classrooms}
+        updateOjStats={this.updateOjStats}
       />
     );
   }
