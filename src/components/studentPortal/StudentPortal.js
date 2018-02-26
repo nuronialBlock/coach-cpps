@@ -5,6 +5,7 @@ import {
     DropdownItem,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
+import ProgressButton from 'react-progress-button'
 
 /** Setting List */
 
@@ -38,6 +39,23 @@ SettingsList.propTypes = {
 
 /** Student List */
 
+async function syncAll(students) {
+  const usernames = students.map((s)=>s.username);
+
+  for (let username of usernames) {
+    try {
+      let resp = await fetch(`/api/v1/users/${username}/sync-solve-count`, {
+        method: 'PUT',
+        credentials: 'same-origin',
+      });
+      resp = await resp.json();
+      if (resp.status !== 201) throw resp;
+    } catch (err) {
+      console.error(`Error synching user: ${username}`, err);
+    }
+  }
+}
+
 function StudentPortal({students, classId, name, owner}) {
   students.sort((a, b)=>{
     return b.currentRating - a.currentRating;
@@ -45,7 +63,13 @@ function StudentPortal({students, classId, name, owner}) {
   let tabulatedStudentsList = students.map((s, ind) => (
     <tr key={s._id}>
       <td>{ind + 1}</td>
-      <td>{s.username}</td>
+      <td>
+        <LinkContainer to={`/users/profile/${s.username}`}>
+          <a>
+            {s.username}
+          </a>
+        </LinkContainer>
+      </td>
       <td>{s.currentRating}</td>
     </tr>
   ));
@@ -62,6 +86,24 @@ function StudentPortal({students, classId, name, owner}) {
           </Col>:
           <span></span>
         }
+      </Row>
+      <Row className="mb-1">
+        <Col>
+          <LinkContainer to={`/classroom/${classId}/leaderboard`}>
+            <Button color="primary">Leaderboard</Button>
+          </LinkContainer>
+        </Col>
+        <Col>
+          {
+            owner?
+            <ProgressButton
+                className="ml-1"
+                onClick={()=>syncAll(students)}
+                >
+              Sync All
+            </ProgressButton>: ''
+          }
+        </Col>
       </Row>
       <Table>
         <thead>

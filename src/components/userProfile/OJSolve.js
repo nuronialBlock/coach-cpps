@@ -20,6 +20,7 @@ export class OJSolve extends Component {
         loading: true,
       });
       let resp = await fetch(`/api/v1/users/${username}/sync-solve-count`, {
+        method: 'PUT',
         credentials: 'same-origin',
       });
       resp = await resp.json();
@@ -36,7 +37,8 @@ export class OJSolve extends Component {
   }
   render() {
     const {displayUser} = this.props;
-    const ojSolve = displayUser.ojStats? (
+    const ojStats = displayUser.ojStats;
+    const ojSolve = ojStats? (
       <Table>
         <thead>
           <tr>
@@ -62,13 +64,18 @@ export class OJSolve extends Component {
     ): (
       <span>Loading</span>
     );
+    const totalSolve = ojStats?
+      ojStats.map((oj)=>oj.solveCount?oj.solveCount:0)
+        .reduce((total, current)=>total+current):
+      0;
+
 
     return (
       <div>
         <Row>
           <Col xs="2"></Col>
           <Col xs="8">
-            <h4>Solve Count</h4>
+            <h4>Solve Count: {totalSolve}</h4>
           </Col>
           <Col xs="2">
             {
