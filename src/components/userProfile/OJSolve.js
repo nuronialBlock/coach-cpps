@@ -64,11 +64,14 @@ export class OJSolve extends Component {
     ): (
       <span>Loading</span>
     );
-    const totalSolve = ojStats?
-      ojStats.map((oj)=>oj.solveCount?oj.solveCount:0)
-        .reduce((total, current)=>{total+current;}, 0):
-      0;
 
+    const totalSolve = ojStats?
+      ojStats
+        .map((oj)=>oj.solveCount?oj.solveCount:0)
+        .reduce((total, current)=>{
+          return total+current;
+        }, 0):
+      0;
 
     return (
       <div>
