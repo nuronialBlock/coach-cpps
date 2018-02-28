@@ -18,6 +18,7 @@ class UserProfileContainer extends Component {
       userId: '',
       displayUser: {},
       classrooms: [],
+      ojnames: [],
     };
 
     this.updateOjStats = this.updateOjStats.bind(this);
@@ -82,7 +83,7 @@ class UserProfileContainer extends Component {
   }
 
   async componentWillMount() {
-    this.loadProfile(this.props);
+    await this.loadProfile(this.props);
   }
 
   async componentWillReceiveProps(nextProps) {

@@ -66,7 +66,7 @@ export class OJSolve extends Component {
     );
     const totalSolve = ojStats?
       ojStats.map((oj)=>oj.solveCount?oj.solveCount:0)
-        .reduce((total, current)=>total+current):
+        .reduce((total, current)=>{total+current;}, 0):
       0;
 
 
