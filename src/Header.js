@@ -58,6 +58,13 @@ class Header extends Component {
         <h1 className='text-center'> CPPS </h1>
         <Nav tabs>
           <NavItem>
+            <NavLink href='/'>
+              <i className='fa fa-home mr-1'></i>
+              Home
+            </NavLink>
+          </NavItem>
+
+          <NavItem>
             <LinkContainer to='/coach'>
               <NavLink>Dashboard</NavLink>
             </LinkContainer>
@@ -77,6 +84,12 @@ class Header extends Component {
 
           <span className="ml-auto"></span>
           <NavItem>
+            <NavLink href='/admin/dashboard'>
+              <i className='fa fa-dashboard mr-1'></i>
+              Admin
+            </NavLink>
+          </NavItem>
+          <NavItem>
             <LinkContainer to={`/users/profile/${username}`}>
               <NavLink>
                 <i className='fa fa-user mr-1'></i>
@@ -86,7 +99,7 @@ class Header extends Component {
           </NavItem>
           <NavItem>
             <NavLink href='/user/logout'>
-              <i className='fa fa-sign-out'></i>
+              <i className='fa fa-sign-out mr-1'></i>
               Logout
             </NavLink>
           </NavItem>

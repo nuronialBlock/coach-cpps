@@ -58,9 +58,12 @@ export function Profile({user, classrooms, displayUser, updateOjStats}) {
       <ListGroupItem>
         <i className="fa fa-user"></i> {displayUser.username}
       </ListGroupItem>
-      <ListGroupItem>
-        <i className="fa fa-key"></i> Change Password
-      </ListGroupItem>
+      {
+        owner?
+        <ListGroupItem>
+          <i className="fa fa-key"></i> Change Password
+        </ListGroupItem>: ''
+      }
       <ListGroupItem>
         <i className="fa fa-users"></i> {
           displayUser.status[0].toUpperCase().slice(0, 1) +
@@ -109,7 +112,9 @@ export function Profile({user, classrooms, displayUser, updateOjStats}) {
           </div>
         </Col>
         <Col className="text-center">
-          <OJSolve displayUser={displayUser} updateOjStats={updateOjStats}/>
+          <OJSolve displayUser={displayUser} updateOjStats={updateOjStats}
+            owner={owner}
+          />
         </Col>
       </Row>
     </div>

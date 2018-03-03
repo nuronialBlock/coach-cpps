@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {LinkContainer} from 'react-router-bootstrap';
 import {Row, Col, Table} from 'reactstrap';
 import {PropTypes} from 'prop-types';
 import Spinner from 'react-spinkit';
@@ -12,7 +13,7 @@ export class OJSolve extends Component {
   }
 
   async updateSolveCount() {
-    const {displayUser, updateOjStats} = this.props;
+    const {displayUser, updateOjStats, owner} = this.props;
     const username = displayUser.username;
 
     try {
@@ -36,7 +37,8 @@ export class OJSolve extends Component {
     }
   }
   render() {
-    const {displayUser} = this.props;
+    const {displayUser, owner} = this.props;
+    const {username} = displayUser;
     const ojStats = displayUser.ojStats;
     const ojSolve = ojStats? (
       <Table>
@@ -54,7 +56,19 @@ export class OJSolve extends Component {
               <tr key={oj._id}>
                 <td>{index}</td>
                 <td>{oj.ojname}</td>
-                <td>{oj.userIds[0]}</td>
+                <td>{oj.userIds[0]?oj.userIds[0]:(
+                  <div>
+                    {
+                      owner?
+                      <LinkContainer to={`/users/profile/${username}/set-oj-username/${oj.ojname}`}>
+                        <span className="btn-link">
+                          Set Username
+                        </span>
+                      </LinkContainer>:
+                      <span>Not Set</span>
+                    }
+                  </div>
+                )}</td>
                 <td>{oj.solveCount}</td>
               </tr>
             );
@@ -98,4 +112,5 @@ export class OJSolve extends Component {
 OJSolve.propTypes = {
   displayUser: PropTypes.shape(),
   updateOjStats: PropTypes.func.isRequired,
+  owner: PropTypes.bool.isRequired,
 };
