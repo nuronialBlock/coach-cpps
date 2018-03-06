@@ -42,7 +42,8 @@ DrawRadarChart.propTypes = {
   userRootStats: PropTypes.shape(),
 };
 
-export function Profile({user, classrooms, displayUser, updateOjStats}) {
+export function Profile(props) {
+  const {user, classrooms, displayUser, updateOjStats} = props;
   const loadingInfo = displayUser.username === undefined;
   const owner = user.username === displayUser.username;
   const {userRootStats} = displayUser;
@@ -113,7 +114,7 @@ export function Profile({user, classrooms, displayUser, updateOjStats}) {
         </Col>
         <Col className="text-center">
           <OJSolve displayUser={displayUser} updateOjStats={updateOjStats}
-            owner={owner}
+            owner={owner} {...props}
           />
         </Col>
       </Row>

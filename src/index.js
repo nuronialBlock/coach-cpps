@@ -8,6 +8,7 @@ import {BrowserRouter} from 'react-router-dom';
 import './css/progressive-button.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.min.css';
+import './css/my.css';
 
 import {fetchUser} from 'actions/userActions';
 
