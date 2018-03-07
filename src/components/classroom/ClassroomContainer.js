@@ -34,26 +34,28 @@ class ClassroomContainer extends Component {
       if (resp.status !== 200) throw resp;
       const userIds = resp.data.students.map((x)=>x._id);
 
-      const query = qs.stringify({
-        classroomId: classId,
-        userIds,
-      });
-      let ratingResp = await fetch(`/api/v1/ratings?${query}`, {
-        credentials: 'same-origin',
-      });
-      ratingResp = await ratingResp.json();
+      if (userIds.length) {
+        const query = qs.stringify({
+          classroomId: classId,
+          userIds,
+        });
+        let ratingResp = await fetch(`/api/v1/ratings?${query}`, {
+          credentials: 'same-origin',
+        });
+        ratingResp = await ratingResp.json();
 
-      if (ratingResp.status !== 200) throw ratingResp;
+        if (ratingResp.status !== 200) throw ratingResp;
 
-      const userIdToRating = {};
-      ratingResp.data.forEach((x)=>{
-        userIdToRating[x.userId] = x.currentRating;
-      });
+        const userIdToRating = {};
+        ratingResp.data.forEach((x)=>{
+          userIdToRating[x.userId] = x.currentRating;
+        });
 
-      const students = resp.data.students;
-      students.forEach((x)=>{
-        x.currentRating = userIdToRating[x._id];
-      });
+        const students = resp.data.students;
+        students.forEach((x)=>{
+          x.currentRating = userIdToRating[x._id];
+        });
+      }
 
       this.setState({
         students: resp.data.students,

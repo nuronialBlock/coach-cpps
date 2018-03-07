@@ -40,6 +40,7 @@ SettingsList.propTypes = {
 /** Student List */
 
 async function syncAll(students) {
+  return alert('disabled');
   const usernames = students.map((s)=>s.username);
 
   for (let username of usernames) {
