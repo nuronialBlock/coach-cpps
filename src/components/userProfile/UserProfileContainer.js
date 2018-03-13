@@ -3,10 +3,19 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Profile} from './Profile.js';
 import qs from 'qs';
+import Notifications from 'react-notification-system-redux';
 
 function mapStateToProps(state) {
   return {
+    notifications: state.notifications,
     user: state.user,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    showNotification(msg) {
+      dispatch(msg);
+    },
   };
 }
 
@@ -92,12 +101,18 @@ class UserProfileContainer extends Component {
   }
 
   render() {
+    const {notifications} = this.props;
     return (
+      <div>
+        <Notifications
+        notifications={notifications}
+      />
       <Profile {...this.props}
         displayUser={this.state.displayUser}
         classrooms={this.state.classrooms}
         updateOjStats={this.updateOjStats}
       />
+      </div>
     );
   }
 }
@@ -106,4 +121,4 @@ UserProfileContainer.propTypes = {
   match: PropTypes.shape(),
 };
 
-export default connect(mapStateToProps)(UserProfileContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfileContainer);

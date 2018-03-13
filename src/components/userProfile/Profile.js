@@ -113,8 +113,8 @@ export function Profile(props) {
           </div>
         </Col>
         <Col className="text-center">
-          <OJSolve displayUser={displayUser} updateOjStats={updateOjStats}
-            owner={owner} {...props}
+          <OJSolve {...props}
+            displayUser={displayUser} updateOjStats={updateOjStats} owner={owner}
           />
         </Col>
       </Row>

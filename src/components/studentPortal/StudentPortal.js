@@ -5,7 +5,7 @@ import {
     DropdownItem,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
-import ProgressButton from 'react-progress-button'
+import ProgressButton from 'react-progress-button';
 
 /** Setting List */
 

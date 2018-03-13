@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {LinkContainer} from 'react-router-bootstrap';
-import {Row, Col, Table, Button, Input} from 'reactstrap';
+// import {LinkContainer} from 'react-router-bootstrap';
+import {Row, Col, Table, Button} from 'reactstrap';
 import {PropTypes} from 'prop-types';
 import Spinner from 'react-spinkit';
 import Loadable from 'react-loading-overlay';
+import {success} from 'react-notification-system-redux';
 
 export class OJSolve extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export class OJSolve extends Component {
   }
 
   async updateSolveCount() {
-    const {displayUser, updateOjStats} = this.props;
+    const {displayUser} = this.props;
     const username = displayUser.username;
 
     try {
@@ -40,8 +41,7 @@ export class OJSolve extends Component {
         credentials: 'same-origin',
       });
       resp = await resp.json();
-
-      updateOjStats(resp.data);
+      if (resp.status !== 202) throw resp;
     } catch (err) {
       if (err.status) alert(err.message);
       console.error(err);
@@ -49,6 +49,12 @@ export class OJSolve extends Component {
       this.setState({
         loading: false,
       });
+      this.props.showNotification(success({
+        title: 'Request Receieved',
+        message: 'Please wait while we process your request',
+        position: 'tr',
+        autoDismiss: 5,
+      }));
     }
   }
 
