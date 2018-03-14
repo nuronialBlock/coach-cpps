@@ -7,6 +7,14 @@ import qs from 'qs';
 function mapStateToProps(state) {
   return {
     user: state.user,
+    notifications: state.notifications,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    showNotification(msg) {
+      dispatch(msg);
+    },
   };
 }
 
@@ -71,6 +79,7 @@ class ClassroomContainer extends Component {
   render() {
     return (
       <Classroom
+        {...this.props}
         name={this.state.name}
         classId={this.state.classId}
         students={this.state.students}
@@ -94,4 +103,4 @@ ClassroomContainer.propTypes = {
 };
 
 
-export default connect(mapStateToProps)(ClassroomContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ClassroomContainer);

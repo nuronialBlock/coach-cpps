@@ -6,6 +6,7 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 import ProgressButton from 'react-progress-button';
+import {success} from 'react-notification-system-redux';
 
 /** Setting List */
 
@@ -39,8 +40,7 @@ SettingsList.propTypes = {
 
 /** Student List */
 
-async function syncAll(students) {
-  return alert('disabled');
+async function syncAll(students, props) {
   const usernames = students.map((s)=>s.username);
 
   for (let username of usernames) {
@@ -50,14 +50,21 @@ async function syncAll(students) {
         credentials: 'same-origin',
       });
       resp = await resp.json();
-      if (resp.status !== 201) throw resp;
+      if (resp.status !== 202) throw resp;
     } catch (err) {
       console.error(`Error synching user: ${username}`, err);
     }
   }
+  props.showNotification(success({
+    title: 'Request Receieved',
+    message: 'Please wait while we process your request',
+    position: 'tr',
+    autoDismiss: 5,
+  }));
 }
 
-function StudentPortal({students, classId, name, owner}) {
+function StudentPortal(props) {
+  const {students, classId, name, owner} = props;
   students.sort((a, b)=>{
     return b.currentRating - a.currentRating;
   });
@@ -99,7 +106,7 @@ function StudentPortal({students, classId, name, owner}) {
             owner?
             <ProgressButton
                 className="ml-1"
-                onClick={()=>syncAll(students)}
+                onClick={()=>syncAll(students, props)}
                 >
               Sync All
             </ProgressButton>: ''
