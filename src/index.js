@@ -20,14 +20,18 @@ const store = createStore(
   applyMiddleware(thunk),
 );
 
-store.dispatch(fetchUser());
+async function main() {
+  await store.dispatch(fetchUser());
 
-ReactDOM.render((
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>
-  ),
-  document.getElementById('root')
-);
+  ReactDOM.render((
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+    ),
+    document.getElementById('root')
+  );
+}
+
+main();
