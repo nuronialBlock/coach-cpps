@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import Notifications, {error, success}
   from 'react-notification-system-redux';
 import Loadable from 'react-loading-overlay';
+import {Redirect} from 'react-router-dom';
 
 class ProblemList extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class ProblemList extends Component {
       view: 'normal',
       ojname: '',
       problemId: '',
+      redirectDashboard: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -129,6 +131,12 @@ class ProblemList extends Component {
               onClick={()=>this.setState({view: 'addProblem'})}
             > Add Problem </div>
         </DropdownItem>
+        <DropdownItem>
+         <div
+             className='btn btn-danger btn-block'
+             onClick={()=>this.deleteProblemList()}
+           > Delete List </div>
+       </DropdownItem>
        </DropdownMenu>
      </UncontrolledDropdown>
    );
@@ -159,6 +167,35 @@ class ProblemList extends Component {
       this.setState({
         loadingState: false,
       });
+    }
+  }
+
+  async deleteProblemList() {
+    const {problemListId} = this.props.match.params;
+
+    try {
+      this.setState({
+        loadingState: true,
+        loadingMessage: 'Deleting the entire list...',
+      });
+
+      let resp = await fetch(`/api/v1/problemlists/${problemListId}`, {
+        method: 'DELETE',
+        credentials: 'same-origin',
+      });
+      resp = await resp.json();
+      if (resp.status !== 201) throw resp;
+      this.setState({
+        redirectDashboard: true,
+      });
+    } catch (err) {
+      this.handleError(err);
+    } finally {
+      if (!this.state.redirectDashboard) {
+        this.setState({
+          loadingState: false,
+        });
+      }
     }
   }
 
@@ -230,6 +267,7 @@ class ProblemList extends Component {
       <Loadable active={this.state.loadingState} spinner={true}
       text={this.state.loadingMessage || 'Please wait a moment...'}>
         <Notifications notifications={this.props.notifications}/>
+        {this.state.redirectDashboard && (<Redirect to={'/coach'}/>)}
         <Row>
           <Col>
             <h1>Problem List: {this.state.title}</h1>
