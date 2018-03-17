@@ -16,13 +16,14 @@ class ProblemList extends Component {
       loadingMessage: 'Fetching data...',
       title: '',
       problems: [],
-      view: 'addProblem',
+      view: 'normal',
       ojname: '',
       problemId: '',
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.removeProblem = this.removeProblem.bind(this);
   }
 
   handleError(err) {
@@ -65,7 +66,7 @@ class ProblemList extends Component {
       if (resp.status !== 200) throw resp;
 
       const data = resp.data;
-      resp = await fetch(`/api/v1/problemlists/${problemListId}/add-problem`, {
+      resp = await fetch(`/api/v1/problemlists/${problemListId}/problems`, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data),
@@ -76,7 +77,6 @@ class ProblemList extends Component {
 
       const newProblems = [...this.state.problems];
       if (resp.data) newProblems.push(resp.data);
-      console.log(newProblems);
       this.setState({
         problems: newProblems,
         ojname: '',
@@ -95,7 +95,6 @@ class ProblemList extends Component {
       });
     }
   }
-
 
   async componentWillMount() {
     const {problemListId} = this.props.match.params;
@@ -135,6 +134,34 @@ class ProblemList extends Component {
    );
   }
 
+  async removeProblem(id) {
+    const {problemListId} = this.props.match.params;
+
+    try {
+      this.setState({
+        loadingState: true,
+        loadingMessage: 'Deleting Problem from List...',
+      });
+      let resp = await fetch(`/api/v1/problemlists/${problemListId}/problems/${id}`, {
+        method: 'DELETE',
+        credentials: 'same-origin',
+      });
+      resp = await resp.json();
+      if ( resp.status !== 201 ) throw resp;
+
+      const newProblems = this.state.problems.filter((x)=>x._id !== id);
+      this.setState({
+        problems: newProblems,
+      });
+    } catch (err) {
+      this.handleError(err);
+    } finally {
+      this.setState({
+        loadingState: false,
+      });
+    }
+  }
+
   problemListView() {
     return (
       <Table>
@@ -142,6 +169,7 @@ class ProblemList extends Component {
           <tr>
             <th>#</th>
             <th>Problem</th>
+            <th>Remove</th>
           </tr>
         </thead>
         <tbody>
@@ -153,6 +181,9 @@ class ProblemList extends Component {
                   <a href={p.link}>
                     {`${p.platform} - ${p.problemId} ${p.title}`}
                   </a>
+                </td>
+                <td className="text-center text-danger">
+                  <i className="fa fa-times pointer" onClick={()=>this.removeProblem(p._id)}/>
                 </td>
               </tr>
             );
@@ -193,6 +224,7 @@ class ProblemList extends Component {
       </Col>
     );
   }
+
   render() {
     return (
       <Loadable active={this.state.loadingState} spinner={true}
@@ -226,6 +258,7 @@ function mapStateToProps(state) {
     ojnames: state.ojnames,
   };
 }
+
 function mapDispatchToProps(dispatch) {
   return {
     showNotification(msg) {
